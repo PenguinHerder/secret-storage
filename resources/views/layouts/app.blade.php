@@ -49,12 +49,24 @@
                                 @endif
                             </li>
                         @else
+							<li class="nav-item dropdown">
+								<a class="dropdown-item" href="{{ route('groups') }}">Groups</a>
+							</li>
+							<li class="nav-item dropdown">
+								<a class="dropdown-item" href="{{ route('buckets') }}">Buckets</a>
+							</li>
+							@can('view', App\Models\User::class)
+							<li class="nav-item dropdown">
+								<a class="dropdown-item" href="{{ route('users') }}">Users</a>
+							</li>
+							@endcan
+							
                             <li class="nav-item dropdown">
                                 <a id="navbarDropdown" class="nav-link dropdown-toggle" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>
                                     Logged as {{ Auth::user()->name }} <span class="caret"></span>
                                 </a>
-
-                                <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown">
+					
+                                <div class="dropdown-menu dropdown-menu-right">
                                     <a class="dropdown-item" href="{{ route('logout') }}"
                                        onclick="event.preventDefault();
                                                      document.getElementById('logout-form').submit();">
