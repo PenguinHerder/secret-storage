@@ -33,25 +33,33 @@ class LoginController extends Controller
      *
      * @return void
      */
-    public function __construct()
-    {
+    public function __construct() {
         $this->middleware('guest')->except('logout');
     }
 	
-	protected function validateLogin(Request $request)
-    {
+	public function logout(Request $request) {
+        $this->guard()->logout();
+
+        $request->session()->invalidate();
+
+        return $this->loggedOut($request) ?: redirect('/logout');
+    }
+	
+	public function logoutPage() {
+		return view('logout');
+	}
+	
+	protected function validateLogin(Request $request) {
         $request->validate([
             $this->username() => 'required|string',
         ]);
     }
 	
-	protected function credentials(Request $request)
-    {
+	protected function credentials(Request $request) {
         return $request->only($this->username());
     }
 	
-	public function username()
-    {
+	public function username() {
         return 'access_token';
     }
 }

@@ -50,22 +50,23 @@
         <div class="col-md-8">
             <div class="card">
                 <div class="card-header">{{ __('Login') }}</div>
-				<div class="form-group row">
-					@if($errors->has('access_token'))
-						<div class="col-md-6">
-							<span class="invalid-feedback d-block" role="alert">
-								<strong>{{ $errors->first('access_token') }}</strong>
-							</span>
-						</div>
-					@else
-						<div class="card-body">
-							<fb:login-button 
-							  scope="public_profile,email"
-							  onlogin="checkLoginState();">
-							</fb:login-button>
-						</div>
-					@endif
-				</div>
+				@if($errors->has('access_token'))
+					<div class="col-md-6">
+						<span class="invalid-feedback d-block" role="alert">
+							<strong>{{ $errors->first('access_token') }}</strong>
+						</span>
+					</div>
+				@else
+					<div class="valid-feedback d-block">
+						Facebook automatic login in progress
+					</div>
+					<div class="card-body">
+						<fb:login-button 
+						  scope="public_profile,email"
+						  onlogin="checkLoginState();">
+						</fb:login-button>
+					</div>
+				@endif
             </div>
         </div>
     </div>
