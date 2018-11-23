@@ -1,12 +1,14 @@
 <?php
 namespace App\Http\Controllers;
 
+use DB;
 use Auth;
 use App\PH\C;
 use App\Models\Role;
 use App\Models\User;
 use App\Models\Group;
 use Illuminate\Http\Request;
+use Illuminate\Validation\Rule;
 
 class UserController extends Controller {
 
@@ -32,8 +34,36 @@ class UserController extends Controller {
 
 	public function create() {
 		$this->authorize('create', User::class);
-		$roles = Role::orderBy('id', 'desc')->get();
+		$roles = $this->getRoles();
 		$groups = Group::orderBy('name', 'asc')->get();
 		return view('user_create', ['roles' => $roles, 'groups' => $groups]);
+	}
+	
+	public function store(Request $request) {
+		$this->authorize('create', User::class);
+		$roles = $this->getRoles();
+		$groups = Group::all();
+		
+		$this->validate($request, [
+			'name' => ['required', 'string', 'between:5,100'],
+			'email' => ['required', 'string', 'email', 'unique:users,email'],
+			'role' => Rule::in($roles->pluck('id')),
+			'groups' => ['required', 'array', 'min:1'],
+			'groups.*' => Rule::in($groups->pluck('id'))
+		]);
+		
+		DB::transaction(function() use($request) {
+			$fields = $request->only(['name', 'email', 'role']);
+			$user = User::create(['name' => $fields['name'], 'email' => $fields['email'], 'role_id' => $fields['role']]);
+			foreach($request->get('groups') as $group) {
+				$user->groups()->attach($group);
+			}
+		});
+		
+		return redirect()->route('users.index');
+	}
+	
+	protected function getRoles() {
+		return Role::where('name', '!=', 'superuser')->orderBy('id', 'desc')->get();
 	}
 }

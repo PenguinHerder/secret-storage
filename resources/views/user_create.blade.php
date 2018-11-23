@@ -46,7 +46,7 @@
 						<select id="role" class="form-control{{ $errors->has('role') ? ' is-invalid' : '' }}" name="role">
 							<option value=''></option>
 							@foreach($roles as $role)
-								<option value='{{ $role->id }}'>{{ $role->name }}</option>
+								<option value='{{ $role->id }}' {{ $role->name === 'default' ? 'selected="selected"' : ''}}>{{ $role->name }}</option>
 							@endforeach
 						</select>
 
@@ -62,7 +62,7 @@
 					<label for="groups" class="col-sm-4 col-form-label text-md-right">Groups</label>
 
 					<div class="col-md-6">
-						<select id="groups" class="form-control{{ $errors->has('groups') ? ' is-invalid' : '' }}" name="groups" multiple="multiple" size='8'>
+						<select id="groups" class="form-control{{ $errors->has('groups') ? ' is-invalid' : '' }}" name="groups[]" multiple="multiple" size='8'>
 							@foreach($groups as $group)
 								<option value='{{ $group->id }}'>{{ $group->name }}</option>
 							@endforeach
