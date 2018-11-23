@@ -5,16 +5,29 @@
     <div class="row justify-content-center">
         <div class="col-md-8">
             <div class="card">
-                <div class="card-header">Dashboard</div>
+                <div class="card-header">Available Audio Files</div>
 
                 <div class="card-body">
-                    @if (session('status'))
-                        <div class="alert alert-success" role="alert">
-                            {{ session('status') }}
-                        </div>
-                    @endif
-
-                    You are logged in!
+                    <table class="table table-striped">
+						<thead>
+							<tr>
+								<td>Date taken</td>
+								<td>Name</td>
+								<td>Description</td>
+								<td></td>
+							</tr>
+						</thead>
+						<tbody>
+							@foreach($list as $audio)
+							<tr>
+								<td>{{ $audio->date_taken }}</td>
+								<td>{{ $audio->name }}</td>
+								<td>{{ $audio->description }}</td>
+								<td><a href="{{ route('audio', ['id' => $audio->id]) }}">Listen</a></td>
+							</tr>
+							@endforeach
+						</tbody>
+					</table>
                 </div>
             </div>
         </div>
