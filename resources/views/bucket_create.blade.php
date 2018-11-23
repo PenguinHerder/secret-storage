@@ -2,12 +2,12 @@
 
 @section('content')
 <div class="container">
-    <div class="row justify-content-center">
+	<div class="alert alert-primary">
+		Create a new bucket
+	</div>
+	
+    <div class="row">
         <div class="col-md-12">
-			<div class="alert alert-primary">
-				Create a new bucket
-			</div>
-			
             <form method="POST" action="{{ route('buckets.store') }}">
 				@csrf
 				

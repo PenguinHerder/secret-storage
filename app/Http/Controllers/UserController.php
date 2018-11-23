@@ -3,7 +3,9 @@ namespace App\Http\Controllers;
 
 use Auth;
 use App\PH\C;
+use App\Models\Role;
 use App\Models\User;
+use App\Models\Group;
 use Illuminate\Http\Request;
 
 class UserController extends Controller {
@@ -26,5 +28,12 @@ class UserController extends Controller {
 		}
 
 		return view($view, ['bucket' => $bucket]);
+	}
+
+	public function create() {
+		$this->authorize('create', User::class);
+		$roles = Role::orderBy('id', 'desc')->get();
+		$groups = Group::orderBy('name', 'asc')->get();
+		return view('user_create', ['roles' => $roles, 'groups' => $groups]);
 	}
 }

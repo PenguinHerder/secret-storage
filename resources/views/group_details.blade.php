@@ -5,10 +5,6 @@
 	<div class="alert alert-primary">
 		{{ $group->name }}
 	</div>
-
-	<div>
-		{{ $group->description }}
-	</div>
 	
 	<div class="row">
 		@foreach($group->buckets as $bucket)
