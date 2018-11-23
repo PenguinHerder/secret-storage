@@ -18,7 +18,10 @@ class CreateBucketsTable extends Migration
 			$table->string('name');
 			$table->text('description');
 			$table->tinyInteger('type');
+            $table->integer('owner_id')->unsigned();
             $table->timestamps();
+			
+			$table->foreign('owner_id')->references('id')->on('users')->onDelete('restrict');
         });
     }
 

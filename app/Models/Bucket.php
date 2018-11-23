@@ -19,4 +19,8 @@ class Bucket extends Model {
 	public function groups() {
 		return $this->belongsToMany(Group::class, 'groups_buckets');
 	}
+	
+	public function owner() {
+		return $this->belongsTo(User::class, 'owner_id');
+	}
 }

@@ -16,7 +16,10 @@ class CreateGroupsTable extends Migration
         Schema::create('groups', function (Blueprint $table) {
             $table->increments('id');
 			$table->string('name');
+			$table->integer('owner_id')->unsigned();
             $table->timestamps();
+			
+			$table->foreign('owner_id')->references('id')->on('users')->onDelete('restrict');
         });
 		
         Schema::create('users_groups', function (Blueprint $table) {
