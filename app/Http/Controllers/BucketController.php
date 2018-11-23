@@ -3,6 +3,7 @@ namespace App\Http\Controllers;
 
 use Auth;
 use App\PH\C;
+use App\Models\Group;
 use App\Models\Bucket;
 use Illuminate\Http\Request;
 
@@ -28,8 +29,26 @@ class BucketController extends Controller {
 		return view($view, ['bucket' => $bucket]);
 	}
 	
-	public function create() {
+	public function create(Request $request) {
 		$this->authorize('create', Bucket::class);
-		return view('bucket_create');
+		return view('bucket_create', ['group_id' => $request->get('group')]);
+	}
+	
+	public function store(Request $request) {
+		$groupId = $request->get('group_id');
+		$this->authorize('create', Bucket::class, $groupId);
+		$this->validate($request, [
+			'name' => ['required', 'string', 'between:5,100', 'unique:groups,name'],
+			'description' => ['required', 'string', 'between:20,5000'],
+			'type' => \Illuminate\Validation\Rule::in([C::BUCKET_TYPE_AUDIO,]),
+			'group_id' => ['required', 'exists:groups,id'],
+		]);
+		
+		$user = Auth::user();
+		$create = array_merge($request->only(['name', 'description', 'type']), ['owner_id' => $user->id]);
+		$group = Group::find($groupId);
+		$group->buckets()->create($create);
+		
+		return redirect()->route('groups.show', ['group' => $groupId]);
 	}
 }

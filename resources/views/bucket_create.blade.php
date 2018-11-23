@@ -6,6 +6,8 @@
         <div class="col-md-12">
             <form method="POST" action="{{ route('buckets.store') }}">
 				@csrf
+				
+				<input type="hidden" name="group_id" value='{{ $group_id }}'>
 
 				<div class="form-group row">
 					<label for="name" class="col-sm-4 col-form-label text-md-right">Name</label>

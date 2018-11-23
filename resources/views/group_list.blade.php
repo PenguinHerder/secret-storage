@@ -24,7 +24,7 @@
 							@foreach($groups as $group)
 							<tr>
 								<td>{{ $group->name }}</td>
-								<td><a href="{{ route('groups.show', ['id' => $group->id]) }}">Details</a></td>
+								<td><a href="{{ route('groups.show', ['group' => $group->id]) }}">Details</a></td>
 							</tr>
 							@endforeach
 							
@@ -36,7 +36,7 @@
 								@foreach($all as $group)
 								<tr>
 									<td>{{ $group->name }}</td>
-									<td><a href="{{ route('groups.show', ['id' => $group->id]) }}">Details</a></td>
+									<td><a href="{{ route('groups.show', ['group' => $group->id]) }}">Details</a></td>
 								</tr>
 								@endforeach
 							@endif

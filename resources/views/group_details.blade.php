@@ -8,7 +8,7 @@
                 <div class="card-header">
 					{{ $group->name }}
 					@can('create', App\Models\Bucket::class)
-					<a href="{{ route('buckets.create') }}" class="float-right">Add a bucket</a>
+					<a href="{{ route('buckets.create', ['group' => $group->id]) }}" class="float-right">Add a bucket</a>
 					@endcan
 				</div>
 
