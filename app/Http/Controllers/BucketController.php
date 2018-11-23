@@ -15,9 +15,16 @@ class BucketController extends Controller {
 
 	public function index() {
 		$user = Auth::user();
-		$buckets = $user->buckets();
 //		$buckets = Bucket::orderBy('created_at', 'desc')->get();
-		return view('bucket_list', ['buckets' => $buckets]);
+		$buckets = $user->buckets();
+		
+		$all = null;
+		if($user->can('spy', Group::class)) {
+			$ids = $buckets->pluck('id')->all();
+			$all = Bucket::whereNotIn('id', $ids)->get();
+		}
+		
+		return view('bucket_list', ['buckets' => $buckets, 'all' => $all]);
 	}
 
 	public function show($id) {
