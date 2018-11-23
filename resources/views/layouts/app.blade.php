@@ -50,7 +50,7 @@
                             </li>
                         @else
 							<li class="nav-item dropdown">
-								<a class="dropdown-item" href="{{ route('groups') }}">Groups</a>
+								<a class="dropdown-item" href="{{ route('groups.index') }}">Groups</a>
 							</li>
 							<li class="nav-item dropdown">
 								<a class="dropdown-item" href="{{ route('buckets') }}">Buckets</a>

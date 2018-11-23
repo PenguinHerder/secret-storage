@@ -22,6 +22,10 @@ class GroupPolicy extends AbstractPolicy {
 		return $this->checkPermission($user, 'groups.create');
 	}
 	
+	public function spy(User $user) {
+		return $this->checkPermission($user, 'groups.spy');
+	}
+	
 	public function before(User $user, $ability) {
 		return $this->beforeBone($user, $ability);
 	}

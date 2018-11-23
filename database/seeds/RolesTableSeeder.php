@@ -25,6 +25,7 @@ class RolesTableSeeder extends Seeder
 				
 				'groups' => [
 					'create' => true,
+					'spy' => true,
 				],
 				
 				'buckets' => [

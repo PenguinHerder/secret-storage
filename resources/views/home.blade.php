@@ -10,7 +10,7 @@
                 <div class="card-body">
                     <ul class="nav flex-column">
 						<li class="nav-item">
-							<a class="nav-link" href="{{ route('groups') }}">Groups</a>
+							<a class="nav-link" href="{{ route('groups.index') }}">Groups</a>
 						</li>
 						<li class="nav-item">
 							<a class="nav-link" href="{{ route('buckets') }}">Buckets</a>

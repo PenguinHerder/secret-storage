@@ -8,7 +8,7 @@
                 <div class="card-header">
 					Groups
 					@can('create', App\Models\Group::class)
-					<span class='float-right'>+New</span>
+					<a class='float-right' href='{{ route('groups.create') }}'>+New</a>
 					@endcan
 				</div>
 
@@ -24,9 +24,22 @@
 							@foreach($groups as $group)
 							<tr>
 								<td>{{ $group->name }}</td>
-								<td><a href="{{ route('group', ['id' => $group->id]) }}">Details</a></td>
+								<td><a href="{{ route('groups.show', ['id' => $group->id]) }}">Details</a></td>
 							</tr>
 							@endforeach
+							
+							@if($all !== null)
+							<tr>
+								<td colspan='2'>Other groups you are NOT a member of</td>
+							</tr>
+							
+								@foreach($all as $group)
+								<tr>
+									<td>{{ $group->name }}</td>
+									<td><a href="{{ route('groups.show', ['id' => $group->id]) }}">Details</a></td>
+								</tr>
+								@endforeach
+							@endif
 						</tbody>
 					</table>
                 </div>

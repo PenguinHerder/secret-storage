@@ -7,7 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 class Bucket extends Model {
 
     protected $fillable = [
-        'name', 'description','type',
+        'name', 'description', 'type', 'owner_id',
     ];
 	
 	public function resources() {
