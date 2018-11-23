@@ -15,7 +15,7 @@ class BucketController extends Controller {
 	public function index() {
 		$user = Auth::user();
 		$buckets = $user->buckets();
-	//		$buckets = Bucket::orderBy('created_at', 'desc')->get();
+//		$buckets = Bucket::orderBy('created_at', 'desc')->get();
 		return view('bucket_list', ['buckets' => $buckets]);
 	}
 

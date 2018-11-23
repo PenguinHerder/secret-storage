@@ -12,6 +12,10 @@ class User extends Authenticatable
         'name', 'email',
     ];
 	
+	public function role() {
+		return $this->belongsTo(Role::class);
+	}
+	
 	public function groups() {
 		return $this->belongsToMany(Group::class, 'users_groups');
 	}

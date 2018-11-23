@@ -5,7 +5,12 @@
     <div class="row justify-content-center">
         <div class="col-md-12">
             <div class="card">
-                <div class="card-header">Groups</div>
+                <div class="card-header">
+					Groups
+					@can('create', App\Models\Group::class)
+					<span class='float-right'>+New</span>
+					@endcan
+				</div>
 
                 <div class="card-body">
                     <table class="table table-striped">

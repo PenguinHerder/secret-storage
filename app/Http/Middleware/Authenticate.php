@@ -18,4 +18,11 @@ class Authenticate extends Middleware
             return route('login');
         }
     }
+	
+	protected function authenticate($request, array $guards) {
+		$guard = parent::authenticate($request, $guards);
+		$this->auth->guard($guard)->user()->load('role');
+		
+		return $guard;
+    }
 }
