@@ -31,13 +31,3 @@ class CreateRolesTable extends Migration
         Schema::dropIfExists('roles');
     }
 }
-
-/*
- * 
-"can_see_everything":true,
-"users":{"add":true,"promote":false},
-"groups":{"create":true},
-"buckets":{"create":true},
-
- * 
- */

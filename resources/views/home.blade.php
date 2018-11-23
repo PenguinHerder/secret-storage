@@ -15,6 +15,11 @@
 						<li class="nav-item">
 							<a class="nav-link" href="{{ route('buckets') }}">Buckets</a>
 						</li>
+						@can('view', App\Models\User::class)
+							<li class="nav-item">
+								<a class="nav-link" href="{{ route('users') }}">Users</a>
+							</li>
+						@endcan
 					</ul>
                 </div>
             </div>

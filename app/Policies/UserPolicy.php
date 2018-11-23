@@ -2,24 +2,26 @@
 namespace App\Policies;
 
 use App\Models\User;
-use App\Models\Group;
 use Illuminate\Auth\Access\HandlesAuthorization;
 
-class GroupPolicy extends AbstractPolicy {
+class UserPolicy extends AbstractPolicy {
     use HandlesAuthorization;
 
-    /**
-     * Create a new policy instance.
-     *
-     * @return void
-     */
     public function __construct()
     {
         //
     }
 	
+	public function view(User $user) {
+		return $this->checkPermission($user, 'users.view');
+	}
+	
 	public function create(User $user) {
-		return $this->checkPermission($user, 'groups.create');
+		return $this->checkPermission($user, 'users.create');
+	}
+	
+	public function promote(User $user) {
+		return $this->checkPermission($user, 'users.promote');
 	}
 	
 	public function before(User $user, $ability) {

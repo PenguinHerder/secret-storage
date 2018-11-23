@@ -8,6 +8,7 @@ Route::get('/logout', 'Auth\LoginController@logoutPage')->name('logout');
 
 Route::get('/groups', 'GroupController@index')->name('groups');
 Route::get('/buckets', 'BucketController@index')->name('buckets');
+Route::get('/users', 'UserController@index')->name('users');
 
 Route::get('/group/{id}', 'GroupController@details')->name('group');
 Route::get('/bucket/{id}', 'BucketController@details')->name('bucket');
