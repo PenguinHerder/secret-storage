@@ -23,7 +23,7 @@
 								<td>{{ $bucket->type }}</td>
 								<td>{{ $bucket->name }}</td>
 								<td>{{ $bucket->description }}</td>
-								<td><a href="{{ route('bucket', ['id' => $bucket->id]) }}">Details</a></td>
+								<td><a href="{{ route('buckets.show', ['id' => $bucket->id]) }}">Details</a></td>
 							</tr>
 							@endforeach
 						</tbody>

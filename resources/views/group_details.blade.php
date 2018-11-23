@@ -7,7 +7,9 @@
             <div class="card">
                 <div class="card-header">
 					{{ $group->name }}
-					<a href="{{ route('home') }}" class="float-right">Back</a>
+					@can('create', App\Models\Bucket::class)
+					<a href="{{ route('buckets.create') }}" class="float-right">Add a bucket</a>
+					@endcan
 				</div>
 
                 <div class="card-body">
@@ -26,7 +28,7 @@
 								<td>{{ $bucket->type }}</td>
 								<td>{{ $bucket->name }}</td>
 								<td>{{ $bucket->description }}</td>
-								<td><a href="{{ route('bucket', ['id' => $bucket->id]) }}">Details</a></td>
+								<td><a href="{{ route('buckets.show', ['id' => $bucket->id]) }}">Details</a></td>
 							</tr>
 							@endforeach
 						</tbody>

@@ -53,11 +53,11 @@
 								<a class="dropdown-item" href="{{ route('groups.index') }}">Groups</a>
 							</li>
 							<li class="nav-item dropdown">
-								<a class="dropdown-item" href="{{ route('buckets') }}">Buckets</a>
+								<a class="dropdown-item" href="{{ route('buckets.index') }}">Buckets</a>
 							</li>
 							@can('view', App\Models\User::class)
 							<li class="nav-item dropdown">
-								<a class="dropdown-item" href="{{ route('users') }}">Users</a>
+								<a class="dropdown-item" href="{{ route('users.index') }}">Users</a>
 							</li>
 							@endcan
 							

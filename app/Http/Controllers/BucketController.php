@@ -27,4 +27,9 @@ class BucketController extends Controller {
 
 		return view($view, ['bucket' => $bucket]);
 	}
+	
+	public function create() {
+		$this->authorize('create', Bucket::class);
+		return view('bucket_create');
+	}
 }
