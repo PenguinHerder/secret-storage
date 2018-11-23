@@ -1,7 +1,6 @@
 <?php
 namespace App\Http\Controllers;
 
-use Auth;
 use Illuminate\Http\Request;
 
 class HomeController extends Controller {
@@ -20,9 +19,6 @@ class HomeController extends Controller {
      * @return \Illuminate\Http\Response
      */
     public function index() {
-		$user = Auth::user();
-		$buckets = $user->buckets();
-//		$buckets = Bucket::orderBy('created_at', 'desc')->get();
-        return view('bucket_list', ['buckets' => $buckets]);
+        return view('home');
     }
 }
