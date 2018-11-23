@@ -21,7 +21,7 @@
 		<div class="col-md-4">
 			<div class="card bg-info">
 				<div class="card-header">
-					<a href="{{ route('groups.show', ['group' => $group->id]) }}">+New</a>
+					<a href="{{ route('groups.show', ['group' => $group->id]) }}"><i class="fa fa-plus"></i> New</a>
 				</div>
 			</div>
 		</div>
