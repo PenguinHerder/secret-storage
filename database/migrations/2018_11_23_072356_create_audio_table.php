@@ -15,11 +15,14 @@ class CreateAudioTable extends Migration
     {
         Schema::create('audio', function (Blueprint $table) {
             $table->increments('id');
+			$table->integer('bucket_id')->unsigned();
 			$table->string('name', 100);
 			$table->text('description');
 			$table->date('date_taken');
 			$table->string('path');
 			$table->timestamps();
+			
+			$table->foreign('bucket_id')->references('id')->on('buckets')->onDelete('cascade');
         });
     }
 
