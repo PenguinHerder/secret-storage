@@ -2,8 +2,7 @@
 
 Auth::routes(['register' => false, 'reset' => false, 'verify' => false]);
 
-Route::redirect('/', '/home', 301);
-Route::get('/home', 'HomeController@index')->name('home');
+Route::redirect('/', '/groups', 301);
 Route::get('/logout', 'Auth\LoginController@logoutPage')->name('logout');
 
 Route::get('/audio/{id}', 'AudioController@details')->name('audio');

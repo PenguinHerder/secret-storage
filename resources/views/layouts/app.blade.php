@@ -49,15 +49,15 @@
                                 @endif
                             </li>
                         @else
-							<li class="nav-item dropdown">
-								<a class="dropdown-item" href="{{ route('groups.index') }}">Groups</a>
+							<li class="nav-item dropdown with-separator">
+								<a class="nav-link" href="{{ route('groups.index') }}">Groups</a>
 							</li>
-							<li class="nav-item dropdown">
-								<a class="dropdown-item" href="{{ route('buckets.index') }}">Buckets</a>
+							<li class="nav-item dropdown with-separator">
+								<a class="nav-link" href="{{ route('buckets.index') }}">Buckets</a>
 							</li>
 							@can('view', App\Models\User::class)
-							<li class="nav-item dropdown">
-								<a class="dropdown-item" href="{{ route('users.index') }}">Users</a>
+							<li class="nav-item dropdown with-separator">
+								<a class="nav-link" href="{{ route('users.index') }}">Users</a>
 							</li>
 							@endcan
 							

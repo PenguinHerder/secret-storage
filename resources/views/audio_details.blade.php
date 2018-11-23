@@ -7,7 +7,6 @@
             <div class="card">
                 <div class="card-header">
 					{{ $audio->name }}
-					<a href="{{ route('home') }}" class="float-right">Back</a>
 				</div>
 
                 <div class="card-body">
