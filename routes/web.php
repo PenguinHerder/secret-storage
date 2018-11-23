@@ -6,6 +6,7 @@ Route::redirect('/', '/home', 301);
 Route::get('/home', 'HomeController@index')->name('home');
 Route::get('/logout', 'Auth\LoginController@logoutPage')->name('logout');
 
+Route::get('/bucket/{id}', 'BucketController@details')->name('bucket');
 Route::get('/audio/{id}', 'AudioController@details')->name('audio');
 Route::get('/raw/{id}', 'AudioController@raw')->name('raw_audio');
 Route::get('/download/{id}', 'AudioController@download')->name('raw_download');

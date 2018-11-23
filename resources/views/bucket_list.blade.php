@@ -5,25 +5,25 @@
     <div class="row justify-content-center">
         <div class="col-md-12">
             <div class="card">
-                <div class="card-header">Available Audio Files</div>
+                <div class="card-header">Buckets:</div>
 
                 <div class="card-body">
                     <table class="table table-striped">
 						<thead>
 							<tr>
-								<td>Date taken</td>
+								<td>Type</td>
 								<td>Name</td>
 								<td>Description</td>
 								<td></td>
 							</tr>
 						</thead>
 						<tbody>
-							@foreach($list as $audio)
+							@foreach($buckets as $bucket)
 							<tr>
-								<td>{{ $audio->date_taken }}</td>
-								<td>{{ $audio->name }}</td>
-								<td>{{ $audio->description }}</td>
-								<td><a href="{{ route('audio', ['id' => $audio->id]) }}">Listen</a></td>
+								<td>{{ $bucket->type }}</td>
+								<td>{{ $bucket->name }}</td>
+								<td>{{ $bucket->description }}</td>
+								<td><a href="{{ route('bucket', ['id' => $bucket->id]) }}">Details</a></td>
 							</tr>
 							@endforeach
 						</tbody>

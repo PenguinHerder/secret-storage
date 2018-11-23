@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Audio;
+use App\Models\Bucket;
 use Illuminate\Http\Request;
 
 class HomeController extends Controller
@@ -24,7 +24,7 @@ class HomeController extends Controller
      */
     public function index()
     {
-		$list = Audio::orderBy('date_taken', 'asc')->get();
-        return view('home', ['list' => $list]);
+		$buckets = Bucket::orderBy('created_at', 'desc')->get();
+        return view('bucket_list', ['buckets' => $buckets]);
     }
 }
