@@ -15,4 +15,8 @@ class Bucket extends Model {
 			case C::BUCKET_TYPE_AUDIO: return $this->hasMany(Audio::class);
 		}
 	}
+	
+	public function groups() {
+		return $this->belongsToMany(Group::class, 'groups_buckets');
+	}
 }

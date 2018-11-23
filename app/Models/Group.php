@@ -10,6 +10,10 @@ class Group extends Model {
     ];
 	
 	public function users() {
-		return $this->hasMany(User::class);
+		return $this->belongsToMany(User::class, 'users_groups');
+	}
+	
+	public function buckets() {
+		return $this->belongsToMany(Bucket::class, 'groups_buckets');
 	}
 }

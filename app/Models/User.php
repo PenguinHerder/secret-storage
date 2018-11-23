@@ -12,7 +12,18 @@ class User extends Authenticatable
         'name', 'email',
     ];
 	
-	public function group() {
-		return $this->belongsTo(Group::class);
+	public function groups() {
+		return $this->belongsToMany(Group::class, 'users_groups');
+	}
+	
+	public function buckets() {
+		$buckets = [];
+		foreach($this->groups()->with('buckets')->get() as $group) {
+			foreach($group->buckets as $bucket) {
+				$buckets[] = $bucket;
+			}
+		}
+		
+		return collect($buckets);
 	}
 }
