@@ -20,7 +20,7 @@ class BucketController extends Controller {
 		return view('bucket_list', ['buckets' => $buckets]);
 	}
 
-	public function details($id) {
+	public function show($id) {
 		$bucket = Bucket::findOrFail($id);
 		switch($bucket->type) {
 			case C::BUCKET_TYPE_AUDIO: $view = 'audio_bucket'; break;
