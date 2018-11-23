@@ -9,7 +9,7 @@ class Group extends Model {
         'name', 'owner_id',
     ];
 	
-	public function users() {
+	public function members() {
 		return $this->belongsToMany(User::class, 'users_groups');
 	}
 	

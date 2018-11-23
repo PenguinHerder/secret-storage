@@ -41,7 +41,10 @@ class GroupController extends Controller {
 			'name' => ['required', 'string', 'between:5,100', 'unique:groups,name']
 		]);
 		
-		Group::create(['name' => $request->get('name'), 'owner_id' => Auth::user()->id]);
+		$user = Auth::user();
+		$group = Group::create(['name' => $request->get('name'), 'owner_id' => $user->id]);
+		$group->members()->attach($user);
+		
 		return redirect()->route('groups.index');
 	}
 }
