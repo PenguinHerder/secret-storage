@@ -1,0 +1,22 @@
+{
+	"root": "/www/local/secret-storage",
+	
+	"supervisord.conf": {
+		"php_app": "/usr/bin/php72",
+		"ruby_app": "/usr/bin/ruby2.1",
+		"user": "andrzej",
+		"ctl_protocol": "unix://",
+		"ctl_server": "/tmp/supervisord_printing.sock"
+	},
+	
+	"nginx.conf": {
+		"port": "80",
+		"fcgi_port": "9007",
+		"fcgi_include": "/etc/nginx/fastcgi.conf",
+		"mime_types": "/etc/nginx/mime.types",
+		"daemon": "off",
+		"log_folder": "/www/local/secret-storage/storage/logs",
+		"log_level": "warn",
+		"user": "andrzej"
+	}
+}
