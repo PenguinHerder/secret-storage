@@ -39,7 +39,7 @@ function bytesToHuman(int $bytes) {
 		'GB' => 2 ** 30,
 		'MB' => 2 ** 20,
 		'KB' => 2 ** 10,
-		'B' => 0,
+		'B' => 1,
 	];
 	
 	foreach($steps as $suffix => $step) {
@@ -49,4 +49,11 @@ function bytesToHuman(int $bytes) {
 	}
 	
 	return '0';
+}
+
+function secondsToHuman(int $seconds) {
+	$minutes = floor($seconds / 60);
+	$secs = $seconds % 60;
+	
+	return str_pad($minutes, 2, '0', STR_PAD_LEFT) . ':' . str_pad($secs, 2, '0', STR_PAD_LEFT);
 }

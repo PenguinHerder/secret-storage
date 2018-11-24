@@ -17,7 +17,13 @@
 		<div class="col-md-4">
 			<div class="card">
 				<div class="card-header">
-					<a href="{{ route('audios.show', ['audio' => $audio->id]) }}">{{ $audio->name }} ({{ $audio->date_taken }})</a>
+					@if($audio->status == App\PH\C::FILE_STATUS_READY)
+						<a href="{{ route('audios.show', ['audio' => $audio->id]) }}">{{ $audio->name }} ({{ $audio->date_taken }})</a>
+					@else
+						<span>
+							{{ $audio->name }} (processing...) <i class='fa fa-cogs'></i>
+						</span>
+					@endif
 				</div>
 				<div class="card-body">
 					{{ $audio->description }}

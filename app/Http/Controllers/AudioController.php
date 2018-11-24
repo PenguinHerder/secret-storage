@@ -11,9 +11,13 @@ class AudioController extends Controller {
 	public function __construct() {
 		$this->middleware('auth');
 	}
+	
+	public function index() {
+		return redirect()->route('groups.index');
+	}
 
 	public function show($audio) {
-		$record = Audio::findOrFail($audio);
+		$record = Audio::where('id', $audio)->where('status', C::FILE_STATUS_READY)->firstOrFail();
 		$this->authorize('view', [Bucket::class, $record->bucket]);
 		return view('audio_details', ['audio' => $record]);
 	}
