@@ -24,10 +24,10 @@ class BucketPolicy extends AbstractPolicy {
 		return $bucket->owner_id == $user->id;
 	}
 	
-	public function create(User $user, $groupId) {
+	public function create(User $user, Group $group) {
 		if($this->checkPermission($user, 'buckets.create')) {
-			$group = $user->groups()->wherePivot('group_id', $groupId)->first();
-			return $group instanceof Group && $group->id > 0;
+			$userGroup = $user->groups()->wherePivot('group_id', $group->id)->first();
+			return $userGroup instanceof Group && $userGroup->id > 0;
 		}
 		
 		return false;

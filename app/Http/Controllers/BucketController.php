@@ -37,14 +37,14 @@ class BucketController extends Controller {
 	}
 	
 	public function create(Request $request) {
-		$groupId = $request->get('group');
-		$this->authorize('create', [Bucket::class, $groupId]);
-		return view('bucket_create', ['group_id' => $groupId]);
+		$group = Group::firstOrFail($request->get('group'));
+		$this->authorize('create', [Bucket::class, $group]);
+		return view('bucket_create', ['group' => $group]);
 	}
 	
 	public function store(Request $request) {
-		$groupId = $request->get('group_id');
-		$this->authorize('create', [Bucket::class, $groupId]);
+		$group = Group::firstOrFail($request->get('group_id'));
+		$this->authorize('create', [Bucket::class, $group]);
 		$this->validate($request, [
 			'name' => ['required', 'string', 'between:5,100', 'unique:groups,name'],
 			'description' => ['required', 'string', 'between:20,5000'],

@@ -3,15 +3,15 @@
 @section('content')
 <div class="container">
 	<div class="alert alert-primary">
-		Create a new bucket
+		Add a new audio file to the "{{ $bucket->name }}" bucket
 	</div>
 	
     <div class="row">
         <div class="col-md-12">
-            <form method="POST" action="{{ route('buckets.store') }}">
+            <form method="POST" action="{{ route('audios.store') }}" enctype="multipart/form-data">
 				@csrf
 				
-				<input type="hidden" name="group_id" value='{{ $group->id }}'>
+				<input type="hidden" name="bucket_id" value='{{ $bucket->id }}'>
 
 				<div class="form-group row">
 					<label for="name" class="col-sm-4 col-form-label text-md-right">Name</label>
@@ -40,19 +40,30 @@
 						@endif
 					</div>
 				</div>
-
+									
 				<div class="form-group row">
-					<label for="type" class="col-sm-4 col-form-label text-md-right">Type</label>
+					<label for="date_taken" class="col-sm-4 col-form-label text-md-right">Date Taken</label>
 
 					<div class="col-md-6">
-						<select id="type" class="form-control{{ $errors->has('type') ? ' is-invalid' : '' }}" name="type">
-							<option value=''></option>
-							<option value='{{ App\PH\C::BUCKET_TYPE_AUDIO }}'>Audio bucket</option>
-						</select>
+						<input id="date_taken" type="date" class="form-control{{ $errors->has('date_taken') ? ' is-invalid' : '' }}" name="date_taken" value="{{ old('date_taken') }}" required>
 
-						@if ($errors->has('type'))
+						@if ($errors->has('date_taken'))
 							<span class="invalid-feedback" role="alert">
-								<strong>{{ $errors->first('type') }}</strong>
+								<strong>{{ $errors->first('date_taken') }}</strong>
+							</span>
+						@endif
+					</div>
+				</div>
+
+				<div class="form-group row">
+					<label for="file" class="col-sm-4 col-form-label text-md-right">File (max. {{ bytesToHuman(getMaximumFileUploadSize()) }})</label>
+
+					<div class="col-md-6">
+						<input id="file" type="file" class="form-control{{ $errors->has('file') ? ' is-invalid' : '' }}" name="file" accept="audio/x-wav">
+
+						@if ($errors->has('file'))
+							<span class="invalid-feedback" role="alert">
+								<strong>{{ $errors->first('file') }}</strong>
 							</span>
 						@endif
 					</div>
