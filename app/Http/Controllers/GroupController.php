@@ -38,7 +38,7 @@ class GroupController extends Controller {
 	public function store(Request $request) {
 		$this->authorize('create', Group::class);
 		$this->validate($request, [
-			'name' => ['required', 'string', 'between:5,100', 'unique:groups,name']
+			'name' => ['required', 'string', 'between:3,100', 'unique:groups,name']
 		]);
 		
 		$user = Auth::user();

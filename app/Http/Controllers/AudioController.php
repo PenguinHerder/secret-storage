@@ -34,7 +34,7 @@ class AudioController extends Controller {
 		$this->authorize('insert', [Bucket::class, $bucket]);
 		$this->validate($request, [
 			'name' => ['required', 'string', 'between:5,100', 'unique:groups,name'],
-			'description' => ['required', 'string', 'between:20,5000'],
+			'description' => ['required', 'string', 'between:15,5000'],
 			'date_taken' => ['required', 'date_format:Y-m-d'],
 			'bucket_id' => ['required', 'exists:buckets,id'],
 			'audio' => ['required', 'file', 'mimetypes:audio/x-wav']

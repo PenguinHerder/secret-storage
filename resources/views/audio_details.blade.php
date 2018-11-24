@@ -18,8 +18,8 @@
 						<td>{{ $audio->description }}</td>
 					</tr>
 					<tr>
-						<td>Length</td>
-						<td>{{ secondsToHuman($audio->length) }}</td>
+						<td>Duration</td>
+						<td>{{ secondsToHuman($audio->duration) }}</td>
 					</tr>
 					<tr>
 						<td>Filesize</td>
