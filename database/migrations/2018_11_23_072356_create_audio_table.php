@@ -19,7 +19,13 @@ class CreateAudioTable extends Migration
 			$table->string('name', 100);
 			$table->text('description');
 			$table->date('date_taken');
-			$table->string('path');
+			$table->string('filename');
+			$table->smallInteger('length');
+			$table->integer('upload_filesize');
+			$table->integer('filesize');
+			$table->text('analysis');
+			$table->text('transcription');
+			$table->tinyInteger('status');
 			$table->timestamps();
 			
 			$table->foreign('bucket_id')->references('id')->on('buckets')->onDelete('cascade');

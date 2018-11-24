@@ -56,14 +56,14 @@
 				</div>
 
 				<div class="form-group row">
-					<label for="file" class="col-sm-4 col-form-label text-md-right">File (max. {{ bytesToHuman(getMaximumFileUploadSize()) }})</label>
+					<label for="audio" class="col-sm-4 col-form-label text-md-right">File (max. {{ bytesToHuman(getMaximumFileUploadSize()) }})</label>
 
 					<div class="col-md-6">
-						<input id="file" type="file" class="form-control{{ $errors->has('file') ? ' is-invalid' : '' }}" name="file" accept="audio/x-wav">
+						<input id="audio" type="file" class="form-control{{ $errors->has('audio') ? ' is-invalid' : '' }}" name="audio" accept="audio/x-wav">
 
-						@if ($errors->has('file'))
+						@if ($errors->has('audio'))
 							<span class="invalid-feedback" role="alert">
-								<strong>{{ $errors->first('file') }}</strong>
+								<strong>{{ $errors->first('audio') }}</strong>
 							</span>
 						@endif
 					</div>

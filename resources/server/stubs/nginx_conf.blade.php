@@ -11,6 +11,8 @@ http {
 	access_log {{ $g('log_folder') }}/http_access.log;
 	
 	include {{ $g('mime_types') }};
+	
+	client_max_body_size {{ $g('max_upload') }};
 
 	server {
 		listen {{ $g('port') }};

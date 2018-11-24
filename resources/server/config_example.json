@@ -17,6 +17,7 @@
 		"daemon": "off",
 		"log_folder": "/www/local/secret-storage/storage/logs",
 		"log_level": "warn",
-		"user": "andrzej"
+		"user": "andrzej",
+		"max_upload": "1G"
 	}
 }

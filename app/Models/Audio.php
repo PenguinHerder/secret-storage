@@ -6,7 +6,8 @@ use Illuminate\Database\Eloquent\Model;
 class Audio extends Model {
 
     protected $fillable = [
-        'name', 'description', 'date_taken', 'path',
+        'name', 'description', 'date_taken', 'filename', 'length',
+		'upload_filesize', 'filesize', 'analysis', 'transcription', 'status',
     ];
 	
 	public function bucket() {

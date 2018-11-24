@@ -37,13 +37,13 @@ class BucketController extends Controller {
 	}
 	
 	public function create(Request $request) {
-		$group = Group::firstOrFail($request->get('group'));
+		$group = Group::findOrFail($request->get('group'));
 		$this->authorize('create', [Bucket::class, $group]);
 		return view('bucket_create', ['group' => $group]);
 	}
 	
 	public function store(Request $request) {
-		$group = Group::firstOrFail($request->get('group_id'));
+		$group = Group::findOrFail($request->get('group_id'));
 		$this->authorize('create', [Bucket::class, $group]);
 		$this->validate($request, [
 			'name' => ['required', 'string', 'between:5,100', 'unique:groups,name'],
@@ -54,9 +54,8 @@ class BucketController extends Controller {
 		
 		$user = Auth::user();
 		$create = array_merge($request->only(['name', 'description', 'type']), ['owner_id' => $user->id]);
-		$group = Group::find($groupId);
 		$group->buckets()->create($create);
 		
-		return redirect()->route('groups.show', ['group' => $groupId]);
+		return redirect()->route('groups.show', ['group' => $group->id]);
 	}
 }
