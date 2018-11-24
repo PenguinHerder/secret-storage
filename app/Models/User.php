@@ -22,9 +22,13 @@ class User extends Authenticatable
 	
 	public function buckets() {
 		$buckets = [];
+		$ids = [];
 		foreach($this->groups()->with('buckets')->get() as $group) {
 			foreach($group->buckets as $bucket) {
-				$buckets[] = $bucket;
+				if(!in_array($bucket->id, $ids)) {
+					$buckets[] = $bucket;
+					$ids[] = $bucket->id;
+				}
 			}
 		}
 		

@@ -8,11 +8,21 @@ use Illuminate\Auth\Access\HandlesAuthorization;
 
 class BucketPolicy extends AbstractPolicy {
     use HandlesAuthorization;
-
-    public function __construct()
-    {
-        //
-    }
+	
+	public function view(User $user, Bucket $bucket) {
+		$userBuckets = $user->buckets();
+		foreach($userBuckets as $userBucket) {
+			if($userBucket->id == $bucket->id) {
+				return true;
+			}
+		}
+		
+		return false;
+	}
+	
+	public function insert(User $user, Bucket $bucket) {
+		return $bucket->owner_id == $user->id;
+	}
 	
 	public function create(User $user, $groupId) {
 		if($this->checkPermission($user, 'buckets.create')) {
