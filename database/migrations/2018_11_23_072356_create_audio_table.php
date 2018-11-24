@@ -20,7 +20,7 @@ class CreateAudioTable extends Migration
 			$table->text('description');
 			$table->date('date_taken');
 			$table->string('filename');
-			$table->smallInteger('length');
+			$table->smallInteger('duration');
 			$table->integer('upload_filesize');
 			$table->integer('filesize');
 			$table->text('analysis');

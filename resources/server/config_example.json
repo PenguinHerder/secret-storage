@@ -11,13 +11,8 @@
 	
 	"nginx.conf": {
 		"port": "80",
-		"fcgi_port": "9007",
+		"fcgi_port": "9000",
 		"fcgi_include": "/etc/nginx/fastcgi.conf",
-		"mime_types": "/etc/nginx/mime.types",
-		"daemon": "off",
-		"log_folder": "/www/local/secret-storage/storage/logs",
-		"log_level": "warn",
-		"user": "andrzej",
 		"max_upload": "1G"
 	}
 }

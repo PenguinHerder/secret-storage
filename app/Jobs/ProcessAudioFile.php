@@ -22,11 +22,8 @@ class ProcessAudioFile implements ShouldQueue {
 	protected $input;
 	protected $output;
 
-	public function __construct(Audio $audio, Filesystem $fs) {
+	public function __construct(Audio $audio) {
 		$this->audio = $audio;
-		$this->fs = $fs;
-		$this->input = storage_path('app/uploads/raw_audio');
-		$this->output = storage_path('app/uploads/audio');
 	}
 	
 	public function __destruct() {
@@ -36,6 +33,7 @@ class ProcessAudioFile implements ShouldQueue {
 	}
 
 	public function handle() {
+		$this->initialize();
 		$this->createTmpFolder();
 		$data = $this->reduceSampleRate();
 		$this->updateDuration($data);
@@ -95,5 +93,17 @@ class ProcessAudioFile implements ShouldQueue {
 		}
 		
 		$this->tmp = $folder;
+	}
+	
+	protected function initialize() {
+		$this->fs = new Filesystem();
+		$this->input = storage_path('app/uploads/raw_audio');
+		$this->output = storage_path('app/uploads/audio');
+		
+		foreach([$this->input, $this->output] as $folder) {
+			if(!$this->fs->exists($folder)) {
+				$this->fs->makeDirectory($folder);
+			}
+		}
 	}
 }

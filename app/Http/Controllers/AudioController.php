@@ -5,6 +5,7 @@ use App\PH\C;
 use App\Models\Audio;
 use App\Models\Bucket;
 use Illuminate\Http\Request;
+use App\Jobs\ProcessAudioFile;
 
 class AudioController extends Controller {
 	
@@ -46,7 +47,7 @@ class AudioController extends Controller {
 				'description' => $data['description'],
 				'date_taken' => $data['date_taken'],
 				'filename' => str_slug($data['name'], '_') . '_' . str_random(8),
-				'length' => 0,
+				'duration' => 0,
 				'upload_filesize' => $request->file('audio')->getSize(),
 				'filesize' => 0,
 				'analysis' => '',
@@ -55,6 +56,7 @@ class AudioController extends Controller {
 			]);
 			
 			$request->file('audio')->storeAs('uploads/raw_audio', $audio->filename . '.wav');
+			ProcessAudioFile::dispatch($audio);
 		}
 		
 		return redirect()->route('buckets.show', ['bucket' => $bucket->id]);

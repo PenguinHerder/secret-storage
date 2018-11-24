@@ -1,5 +1,5 @@
 <?php
-namespace App\GMGB\Process\Parsers;
+namespace App\PH\Process\Parsers;
 
 class ReduceSampleRate {
 	
@@ -10,7 +10,7 @@ class ReduceSampleRate {
 	}
 	
 	protected function parseDuration(string $data) {
-		preg_match("/Output File.*Duration *: (?<duration>[\d:]+)/is", $data, $matches);
+		preg_match("/Output File.*Duration *: *(?<duration>[\d:]+)/is", $data, $matches);
 		return $matches['duration'] ?? null;
 	}
 }

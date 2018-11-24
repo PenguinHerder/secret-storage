@@ -18,7 +18,7 @@ trait RunTrait {
 		];
 		
 		if($parser !== null) {
-			$output = $process->getOutput();
+			$output = $process->getOutput() . "\n\n" . $process->getErrorOutput();
 			$data['data'] = $this->getParser()->parse($parser, $output);
 		}
 		
