@@ -42,10 +42,10 @@
 				:audio='{{ json_encode($audio) }}'
 				:user-id='{{ Auth::user()->id }}'
 				audio-uri='{{ route('raw_audio', ['audio' => $audio->id]) }}'
-				save-analysis-uri='{{ route('save_analysis', ['audio' => $audio->id]) }}'></audio-panel>
+				save-analysis-uri='{{ route('save_analysis', ['audio' => $audio->id]) }}'
+				approve-analysis-uri='{{ route('approve_analysis', ['audio' => $audio->id]) }}'
+				:can-approve="{{ Auth::user()->can('insert', [App\Models\Bucket::class, $audio->bucket]) ? 'true' : 'false' }}"></audio-panel>
 		</div>
     </div>
-	
-	
 </div>
 @endsection

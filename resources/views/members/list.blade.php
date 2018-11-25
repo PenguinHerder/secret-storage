@@ -23,7 +23,7 @@
 		</div>
 		@endforeach
 
-		@can('create', App\Models\User::class)
+		@can('add', App\Models\User::class)
 		<div class="col-md-4">
 			<div class="card bg-info">
 				<div class="card-header">

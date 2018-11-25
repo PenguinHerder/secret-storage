@@ -11,8 +11,8 @@ class UserPolicy extends AbstractPolicy {
 		return $this->checkPermission($user, 'users.view');
 	}
 	
-	public function create(User $user) {
-		return $this->checkPermission($user, 'users.create');
+	public function add(User $user) {
+		return $this->checkPermission($user, 'users.add');
 	}
 	
 	public function promote(User $user) {

@@ -33,14 +33,14 @@ class MemberController extends Controller {
 	}
 
 	public function create() {
-		$this->authorize('create', User::class);
+		$this->authorize('add', User::class);
 		$roles = $this->getRoles();
 		$groups = Group::orderBy('name', 'asc')->get();
 		return view('members.create', ['roles' => $roles, 'groups' => $groups]);
 	}
 	
 	public function store(Request $request) {
-		$this->authorize('create', User::class);
+		$this->authorize('add', User::class);
 		$roles = $this->getRoles();
 		$groups = Group::all();
 		

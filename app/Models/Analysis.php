@@ -11,6 +11,7 @@ class Analysis extends Model {
 	
 	protected $casts = [
 		'sections' => 'array',
+		'approved' => 'boolean',
 	];
 	
 	public function audio() {

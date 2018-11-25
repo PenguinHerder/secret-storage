@@ -47478,13 +47478,23 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
 	props: {
 		audio: Object,
 		userId: Number,
 		audioUri: String,
-		saveAnalysisUri: String
+		saveAnalysisUri: String,
+		approveAnalysisUri: String,
+		canApprove: Boolean
 	},
 
 	data: function data() {
@@ -47501,8 +47511,6 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 		};
 	},
 	mounted: function mounted() {
-		console.log(this.audio);
-
 		if (this.audio.analyses.length > 0) {
 			this.selectedAnalysisId = this.audio.analyses[0].id;
 		}
@@ -47521,7 +47529,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 		selectedAnalysis: function selectedAnalysis() {
 			for (var i in this.audio.analyses) {
 				if (this.audio.analyses[i].id === this.selectedAnalysisId) {
-					return this.audio.analyses[i].sections;
+					return this.audio.analyses[i];
 				}
 			}
 
@@ -47530,6 +47538,18 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 	},
 
 	methods: {
+		approveAnalysisClick: function approveAnalysisClick() {
+			var _this = this;
+
+			axios.post(this.approveAnalysisUri, {
+				id: this.selectedAnalysisId
+			}).then(function (response) {
+				_this.audio.analyses = response.data.analyses;
+				_this.displayMessage("This analysis is now visible to everyone, Thank you! :)", 'success');
+			}).catch(function (error) {
+				_this.displayMessage(error.response.data.message, 'danger');
+			});
+		},
 		setPositionClick: function setPositionClick(position) {
 			this.$refs.audio.currentTime = position;
 			this.$refs.audio.play();
@@ -47542,25 +47562,25 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 			}
 		},
 		saveAnalysis: function saveAnalysis() {
-			var _this = this;
+			var _this2 = this;
 
 			axios.post(this.saveAnalysisUri, {
 				data: JSON.stringify(this.analysis)
 			}).then(function (response) {
-				_this.audio.analyses = response.data.analyses;
-				_this.displayMessage("Your analysis has been saved for the review, Thank you! :)", 'success');
+				_this2.audio.analyses = response.data.analyses;
+				_this2.displayMessage("Your analysis has been saved for the review, Thank you! :)", 'success');
 			}).catch(function (error) {
-				_this.displayMessage(error.response.data.message, 'danger');
+				_this2.displayMessage(error.response.data.message, 'danger');
 			});
 		},
 		displayMessage: function displayMessage(message, type) {
-			var _this2 = this;
+			var _this3 = this;
 
 			this.messageType = ['alert', 'alert-' + type];
 			this.message = message;
 			this.showAnalysis = false;
 			setTimeout(function () {
-				_this2.message = null;
+				_this3.message = null;
 			}, 4000);
 		},
 		currentTimeClick: function currentTimeClick() {
@@ -47675,13 +47695,39 @@ var render = function() {
                       return _c(
                         "option",
                         { domProps: { value: analysis.id } },
-                        [_vm._v("By " + _vm._s(analysis.author.name))]
+                        [
+                          _vm._v(
+                            "By " +
+                              _vm._s(analysis.author.name) +
+                              " " +
+                              _vm._s(
+                                analysis.approved ? "" : "(awaiting approval)"
+                              )
+                          )
+                        ]
                       )
                     })
                   )
-                : _c("span", [
-                    _vm._v("By " + _vm._s(_vm.audio.analyses[0].author.name))
-                  ])
+                : _c("div", [
+                    _c("span", [
+                      _vm._v("By " + _vm._s(_vm.audio.analyses[0].author.name))
+                    ]),
+                    _vm._v(" "),
+                    _vm.audio.analyses[0].approved
+                      ? _c("i", { staticClass: "fa fa-check" })
+                      : _c("small", [_vm._v("(awaiting approval)")])
+                  ]),
+              _vm._v(" "),
+              _vm.canApprove && !_vm.selectedAnalysis.approved
+                ? _c(
+                    "button",
+                    {
+                      staticClass: "btn btn-sm btn-info",
+                      on: { click: _vm.approveAnalysisClick }
+                    },
+                    [_vm._v("Approve this analysis")]
+                  )
+                : _vm._e()
             ])
           : _vm._e()
       ]),
@@ -47721,9 +47767,15 @@ var render = function() {
             _vm._v(" "),
             _c(
               "tbody",
-              _vm._l(_vm.selectedAnalysis, function(section) {
+              _vm._l(_vm.selectedAnalysis.sections, function(section) {
                 return _c("tr", [
                   _c("td", [_vm._v(_vm._s(_vm.secondsToTime(section.start)))]),
+                  _vm._v(" "),
+                  _c("td", [
+                    _vm._v(
+                      _vm._s(_vm.secondsToTime(section.end - section.start))
+                    )
+                  ]),
                   _vm._v(" "),
                   _c("td", [
                     _vm._v(_vm._s(section.noise ? "[Noise]" : section.content))
@@ -47955,6 +48007,8 @@ var staticRenderFns = [
     return _c("thead", [
       _c("tr", [
         _c("th", [_vm._v("Start")]),
+        _vm._v(" "),
+        _c("th", [_vm._v("Length")]),
         _vm._v(" "),
         _c("th", [_vm._v("Content")]),
         _vm._v(" "),

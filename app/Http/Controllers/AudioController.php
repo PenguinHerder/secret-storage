@@ -5,6 +5,7 @@ use Auth;
 use App\PH\C;
 use App\Models\Audio;
 use App\Models\Bucket;
+use App\Models\Analysis;
 use Illuminate\Http\Request;
 use App\Jobs\ProcessAudioFile;
 
@@ -21,7 +22,16 @@ class AudioController extends Controller {
 	public function show($audio) {
 		$model = Audio::where('id', $audio)->where('status', C::FILE_STATUS_READY)->firstOrFail();
 		$this->authorize('view', [Bucket::class, $model->bucket]);
-		$model->load(['analyses', 'analyses.author']);
+		$model->load([
+			'analyses' => function($query) use($model) {
+				$userId = Auth::user()->id;
+				if($model->bucket->owner_id != $userId) {
+					$query->where('approved', true)->orWhere('user_id', $userId);
+				}
+			},
+			'analyses.author'
+		]);
+		
 		return view('audio.details', ['audio' => $model]);
 	}
 	
@@ -100,7 +110,26 @@ class AudioController extends Controller {
 		
 		return response()->json([
 			'status' => 'success',
-			'analyses' => $model->analyses()->get(),
+			'analyses' => $model->analyses()->with('author')->get(),
 		]);
+	}
+	
+	public function approveAnalysis($audio, Request $request) {
+		$model = Audio::where('id', $audio)->where('status', C::FILE_STATUS_READY)->firstOrFail();
+		$this->authorize('insert', [Bucket::class, $model->bucket]);
+		
+		$this->validate($request, [
+			'id' => ['required', 'int', 'exists:analyses,id'],
+		]);
+		
+		$analysis = Analysis::find($request->get('id'));
+		$analysis->approved = true;
+		$analysis->save();
+		
+		return response()->json([
+			'status' => 'success',
+			'analyses' => $model->analyses()->with('author')->get(),
+		]);
+		
 	}
 }

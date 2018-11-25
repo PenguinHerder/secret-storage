@@ -10,9 +10,15 @@
 			<div class="col-md-6">
 				<div v-if="!showAnalysis && audio.analyses.length > 0">
 					<select v-if="audio.analyses.length > 1" v-model="selectedAnalysisId" class="form-control">
-						<option v-for="analysis in audio.analyses" :value="analysis.id">By {{ analysis.author.name }}</option>
+						<option v-for="analysis in audio.analyses" :value="analysis.id">By {{ analysis.author.name }} {{ analysis.approved ? '' : '(awaiting approval)' }}</option>
 					</select>
-					<span v-else>By {{ audio.analyses[0].author.name }}</span>
+					<div v-else>
+						<span>By {{ audio.analyses[0].author.name }}</span>
+						<i v-if="audio.analyses[0].approved" class="fa fa-check"></i>
+						<small v-else>(awaiting approval)</small>
+					</div>
+
+					<button v-if="canApprove && !selectedAnalysis.approved" @click="approveAnalysisClick" class="btn btn-sm btn-info">Approve this analysis</button>
 				</div>
 			</div>
 			<div class="col-md-6">
@@ -25,13 +31,15 @@
 				<thead>
 					<tr>
 						<th>Start</th>
+						<th>Length</th>
 						<th>Content</th>
 						<th>Jump</th>
 					</tr>
 				</thead>
 				<tbody>
-					<tr v-for="section in selectedAnalysis">
+					<tr v-for="section in selectedAnalysis.sections">
 						<td>{{ secondsToTime(section.start) }}</td>
+						<td>{{ secondsToTime(section.end - section.start) }}</td>
 						<td>{{ section.noise ? "[Noise]" : section.content }}</td>
 						<td>
 							<button @click="setPositionClick(section.start)" class="btn btn-sm btn-info">
@@ -104,6 +112,8 @@
 			userId: Number,
 			audioUri: String,
 			saveAnalysisUri: String,
+			approveAnalysisUri: String,
+			canApprove: Boolean,
 		},
 
 		data() {
@@ -121,8 +131,6 @@
 		},
 
         mounted() {
-            console.log(this.audio)
-
 			if(this.audio.analyses.length > 0) {
 				this.selectedAnalysisId = this.audio.analyses[0].id
 			}
@@ -140,7 +148,7 @@
 			selectedAnalysis: function() {
 				for(let i in this.audio.analyses) {
 					if(this.audio.analyses[i].id === this.selectedAnalysisId) {
-						return this.audio.analyses[i].sections
+						return this.audio.analyses[i]
 					}
 				}
 
@@ -149,6 +157,17 @@
 		},
 
 		methods: {
+			approveAnalysisClick() {
+				axios.post(this.approveAnalysisUri, {
+					id: this.selectedAnalysisId
+				}).then(response => {
+					this.audio.analyses = response.data.analyses
+					this.displayMessage("This analysis is now visible to everyone, Thank you! :)", 'success')
+				}).catch(error => {
+					this.displayMessage(error.response.data.message, 'danger')
+				})
+			},
+
 			setPositionClick(position) {
 				this.$refs.audio.currentTime = position
 				this.$refs.audio.play()
