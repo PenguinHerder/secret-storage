@@ -1,6 +1,7 @@
 <?php
 namespace App\Http\Controllers;
 
+use Auth;
 use App\PH\C;
 use App\Models\Audio;
 use App\Models\Bucket;
@@ -73,5 +74,33 @@ class AudioController extends Controller {
 		$audio = Audio::findOrFail($id);
 		$this->authorize('view', [Bucket::class, $audio->bucket]);
 		return response()->download(storage_path('app/uploads/audio/' . $audio->filename . '.mp3'), $audio->name . '.mp3');
+	}
+	
+	public function saveAnalysis($audio, Request $request) {
+		$model = Audio::where('id', $audio)->where('status', C::FILE_STATUS_READY)->firstOrFail();
+		$this->authorize('view', [Bucket::class, $model->bucket]);
+		
+		$this->validate($request, [
+			'data' => ['required', 'json'],
+		]);
+		
+		$data = json_decode($request->get('data'), true);
+		$this->getValidationFactory()->make($data, [
+				'*.start' => ['required', 'int'],
+				'*.end' => ['required', 'int'],
+				'*.content' => ['required_if:noise,false', 'min:3'],
+			]
+        )->validate();
+		
+		$model->analyses()->create([
+			'user_id' => Auth::user()->id,
+			'sections' => $data,
+			'approved' => false,
+		]);
+		
+		return response()->json([
+			'status' => 'success',
+			'analyses' => $model->analyses()->get(),
+		]);
 	}
 }

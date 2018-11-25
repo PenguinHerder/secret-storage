@@ -48,13 +48,13 @@
 					<tr>
 						<td colspan="3"></td>
 						<td>
-							<button class="btn btn-primary">Save Analysis</button>
+							<button @click="saveAnalysisClick" class="btn btn-primary">Save Analysis</button>
 						</td>
 					</tr>
 				</tbody>
 			</table>
 		</div>
-		<audio controls :src="uri" ref="audio">
+		<audio controls :src="audioUri" ref="audio">
 			Your browser does not support the
 			<code>audio</code> element.
 		</audio>
@@ -66,7 +66,8 @@
 		props: {
 			audio: Object,
 			isOwner: Boolean,
-			uri: String
+			audioUri: String,
+			saveAnalysisUri: String,
 		},
 
 		data() {
@@ -84,6 +85,25 @@
         },
 
 		methods: {
+			saveAnalysisClick() {
+				if(this.analysis.length < 1) {
+					this.error = "Analysis is too short"
+				}
+				else {
+					this.saveAnalysis()
+				}
+			},
+
+			saveAnalysis() {
+				axios.post(this.saveAnalysisUri, {
+					data: JSON.stringify(this.analysis)
+				}).then(response => {
+					console.log(response.data)
+				}).catch(error => {
+					console.log(error.response.data)
+				})
+			},
+
 			currentTimeClick() {
 				this.section.end = Math.floor(this.$refs.audio.currentTime)
 				this.sectionEndModel = this.secondsToTime(this.section.end)
@@ -109,7 +129,7 @@
 			},
 
 			validate() {
-				if(! /^\d{2,3}:\d{2}$/.test(this.sectionEndModel)) {
+				if(! /^\d{2,3}:[0-5]\d$/.test(this.sectionEndModel)) {
 					this.error = "invalid end time"
 					return false
 				}

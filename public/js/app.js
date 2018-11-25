@@ -47447,7 +47447,8 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 	props: {
 		audio: Object,
 		isOwner: Boolean,
-		uri: String
+		audioUri: String,
+		saveAnalysisUri: String
 	},
 
 	data: function data() {
@@ -47465,6 +47466,22 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 
 
 	methods: {
+		saveAnalysisClick: function saveAnalysisClick() {
+			if (this.analysis.length < 1) {
+				this.error = "Analysis is too short";
+			} else {
+				this.saveAnalysis();
+			}
+		},
+		saveAnalysis: function saveAnalysis() {
+			axios.post(this.saveAnalysisUri, {
+				data: JSON.stringify(this.analysis)
+			}).then(function (response) {
+				console.log(response.data);
+			}).catch(function (error) {
+				console.log(error.response.data);
+			});
+		},
 		currentTimeClick: function currentTimeClick() {
 			this.section.end = Math.floor(this.$refs.audio.currentTime);
 			this.sectionEndModel = this.secondsToTime(this.section.end);
@@ -47722,7 +47739,20 @@ var render = function() {
                   ])
                 ]),
                 _vm._v(" "),
-                _vm._m(1)
+                _c("tr", [
+                  _c("td", { attrs: { colspan: "3" } }),
+                  _vm._v(" "),
+                  _c("td", [
+                    _c(
+                      "button",
+                      {
+                        staticClass: "btn btn-primary",
+                        on: { click: _vm.saveAnalysisClick }
+                      },
+                      [_vm._v("Save Analysis")]
+                    )
+                  ])
+                ])
               ],
               2
             )
@@ -47730,7 +47760,7 @@ var render = function() {
         ])
       : _vm._e(),
     _vm._v(" "),
-    _c("audio", { ref: "audio", attrs: { controls: "", src: _vm.uri } }, [
+    _c("audio", { ref: "audio", attrs: { controls: "", src: _vm.audioUri } }, [
       _vm._v("\n\t\t\tYour browser does not support the\n\t\t\t"),
       _c("code", [_vm._v("audio")]),
       _vm._v(" element.\n\t\t")
@@ -47751,20 +47781,6 @@ var staticRenderFns = [
         _c("th", [_vm._v("Content")]),
         _vm._v(" "),
         _c("th")
-      ])
-    ])
-  },
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c("tr", [
-      _c("td", { attrs: { colspan: "3" } }),
-      _vm._v(" "),
-      _c("td", [
-        _c("button", { staticClass: "btn btn-primary" }, [
-          _vm._v("Save Analysis")
-        ])
       ])
     ])
   }

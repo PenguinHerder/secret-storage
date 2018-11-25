@@ -30,7 +30,7 @@
 					</tr>
 					<tr>
 						<td>
-							<a href="{{ route('raw_download', ['id' => $audio->id]) }}">Download</a>
+							<a href="{{ route('raw_download', ['audio' => $audio->id]) }}">Download</a>
 						</td>
 						<td></td>
 					</tr>
@@ -41,7 +41,8 @@
 			<audio-panel
 				:audio='{{ json_encode($audio) }}'
 				:is-owner='{{ $audio->bucket->owner_id == Auth::user()->id ? 'true' : 'false' }}'
-				uri='{{ route('raw_audio', ['id' => $audio->id]) }}'></audio-panel>
+				audio-uri='{{ route('raw_audio', ['audio' => $audio->id]) }}'
+				save-analysis-uri='{{ route('save_analysis', ['audio' => $audio->id]) }}'></audio-panel>
 		</div>
     </div>
 	

@@ -6,7 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 class Analysis extends Model {
 
     protected $fillable = [
-        'user_id', 'sections',
+        'user_id', 'sections', 'approved',
     ];
 	
 	protected $casts = [
