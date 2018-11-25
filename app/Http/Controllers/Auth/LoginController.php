@@ -46,7 +46,7 @@ class LoginController extends Controller
     }
 	
 	public function logoutPage() {
-		return view('logout');
+		return view('auth.logout');
 	}
 	
 	protected function validateLogin(Request $request) {

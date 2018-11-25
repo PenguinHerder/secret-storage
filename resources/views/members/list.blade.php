@@ -27,7 +27,7 @@
 		<div class="col-md-4">
 			<div class="card bg-info">
 				<div class="card-header">
-					<a href="{{ route('users.create') }}"><i class="fa fa-plus"></i> Add</a>
+					<a href="{{ route('members.create') }}"><i class="fa fa-plus"></i> Add</a>
 				</div>
 			</div>
 		</div>

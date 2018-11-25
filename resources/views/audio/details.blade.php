@@ -38,10 +38,10 @@
 			</table>
 		</div>
 		<div class="col-md-4">
-				<audio controls src="{{ route('raw_audio', ['id' => $audio->id]) }}" style="width:100%">
-						Your browser does not support the
-						<code>audio</code> element.
-				</audio>
+			<audio controls src="{{ route('raw_audio', ['id' => $audio->id]) }}" style="width:100%">
+				Your browser does not support the
+				<code>audio</code> element.
+			</audio>
 		</div>
     </div>
 </div>

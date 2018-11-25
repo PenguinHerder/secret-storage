@@ -25,7 +25,7 @@
 	</div>
 </div>
 
-@if($all !== null)
+@if($all !== null && !$all->isEmpty())
 	<div class='container'>
 		<div class='alert alert-secondary'>
 			Buckets belonging to groups you are NOT a member of

@@ -24,13 +24,13 @@ class BucketController extends Controller {
 			$all = Bucket::whereNotIn('id', $ids)->get();
 		}
 		
-		return view('bucket_list', ['buckets' => $buckets, 'all' => $all]);
+		return view('bucket.list', ['buckets' => $buckets, 'all' => $all]);
 	}
 
 	public function show($id) {
 		$bucket = Bucket::findOrFail($id);
 		switch($bucket->type) {
-			case C::BUCKET_TYPE_AUDIO: $view = 'audio_bucket'; break;
+			case C::BUCKET_TYPE_AUDIO: $view = 'bucket.audio'; break;
 		}
 
 		return view($view, ['bucket' => $bucket]);
@@ -39,7 +39,7 @@ class BucketController extends Controller {
 	public function create(Request $request) {
 		$group = Group::findOrFail($request->get('group'));
 		$this->authorize('create', [Bucket::class, $group]);
-		return view('bucket_create', ['group' => $group]);
+		return view('bucket.create', ['group' => $group]);
 	}
 	
 	public function store(Request $request) {

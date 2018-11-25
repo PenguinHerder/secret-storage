@@ -21,18 +21,18 @@ class GroupController extends Controller {
 			$all = Group::whereNotIn('id', $ids)->get();
 		}
 		
-		return view('group_list', ['groups' => $groups, 'all' => $all]);
+		return view('group.list', ['groups' => $groups, 'all' => $all]);
 	}
 
 	public function show($group) {
 		$group = Group::findOrFail($group);
 
-		return view('group_details', ['group' => $group]);
+		return view('group.details', ['group' => $group]);
 	}
 	
 	public function create() {
 		$this->authorize('create', Group::class);
-		return view('group_create');
+		return view('group.create');
 	}
 	
 	public function store(Request $request) {

@@ -20,13 +20,13 @@ class AudioController extends Controller {
 	public function show($audio) {
 		$record = Audio::where('id', $audio)->where('status', C::FILE_STATUS_READY)->firstOrFail();
 		$this->authorize('view', [Bucket::class, $record->bucket]);
-		return view('audio_details', ['audio' => $record]);
+		return view('audio.details', ['audio' => $record]);
 	}
 	
 	public function create(Request $request) {
 		$bucket = Bucket::findOrFail($request->get('bucket'));
 		$this->authorize('insert', [Bucket::class, $bucket]);
-		return view('audio_insert', ['bucket' => $bucket]);
+		return view('audio.insert', ['bucket' => $bucket]);
 	}
 	
 	public function store(Request $request) {

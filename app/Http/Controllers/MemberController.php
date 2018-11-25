@@ -10,7 +10,7 @@ use App\Models\Group;
 use Illuminate\Http\Request;
 use Illuminate\Validation\Rule;
 
-class UserController extends Controller {
+class MemberController extends Controller {
 
 	public function __construct() {
 		$this->middleware('auth');
@@ -20,7 +20,7 @@ class UserController extends Controller {
 		$this->authorize('view', User::class);
 		
 		$users = User::orderBy('name', 'asc')->with(['role', 'groups'])->get();
-		return view('user_list', ['users' => $users]);
+		return view('members.list', ['users' => $users]);
 	}
 
 	public function details($id) {
@@ -36,7 +36,7 @@ class UserController extends Controller {
 		$this->authorize('create', User::class);
 		$roles = $this->getRoles();
 		$groups = Group::orderBy('name', 'asc')->get();
-		return view('user_create', ['roles' => $roles, 'groups' => $groups]);
+		return view('members.create', ['roles' => $roles, 'groups' => $groups]);
 	}
 	
 	public function store(Request $request) {
@@ -60,7 +60,7 @@ class UserController extends Controller {
 			}
 		});
 		
-		return redirect()->route('users.index');
+		return redirect()->route('members.index');
 	}
 	
 	protected function getRoles() {

@@ -10,5 +10,5 @@ Route::get('/download/{id}', 'AudioController@download')->name('raw_download');
 
 Route::resource('groups', 'GroupController')->only(['index', 'create', 'show', 'store']);
 Route::resource('buckets', 'BucketController')->only(['index', 'create', 'show', 'store']);
-Route::resource('users', 'UserController')->only(['index', 'create', 'show', 'store']);
+Route::resource('members', 'MemberController')->only(['index', 'create', 'show', 'store']);
 Route::resource('audios', 'AudioController')->only(['index', 'create', 'show', 'store']);

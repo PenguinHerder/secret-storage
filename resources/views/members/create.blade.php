@@ -8,7 +8,7 @@
 	
     <div class="row">
         <div class="col-md-12">
-            <form method="POST" action="{{ route('users.store') }}">
+            <form method="POST" action="{{ route('members.store') }}">
 				@csrf
 
 				<div class="form-group row">
