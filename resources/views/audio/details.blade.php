@@ -6,7 +6,7 @@
 		{{ $audio->name }}
 	</div>
     <div class="row">
-		<div class="col-md-8">
+		<div class="col-md-7">
 			<table class="table">
 				<tbody>
 					<tr>
@@ -37,7 +37,7 @@
 				</tbody>
 			</table>
 		</div>
-		<div class="col-md-4">
+		<div class="col-md-5">
 			<audio controls src="{{ route('raw_audio', ['id' => $audio->id]) }}" style="width:100%">
 				Your browser does not support the
 				<code>audio</code> element.

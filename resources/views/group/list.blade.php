@@ -6,6 +6,12 @@
 		Groups
 	</div>
 
+	@if($groups->isEmpty())
+	<div class="alert alert-warning">
+		You are not a member of any group
+	</div>
+	@endif
+	
 	<div class="row">
 		@foreach($groups as $group)
 		<div class="col-md-4">

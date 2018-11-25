@@ -7,16 +7,11 @@ use Illuminate\Auth\Access\HandlesAuthorization;
 
 class GroupPolicy extends AbstractPolicy {
     use HandlesAuthorization;
-
-    /**
-     * Create a new policy instance.
-     *
-     * @return void
-     */
-    public function __construct()
-    {
-        //
-    }
+	
+	public function view(User $user, Group $group) {
+		$userCount = $user->groups()->wherePivot('group_id', $group->id)->count();
+		return $userCount == 1;
+	}
 	
 	public function create(User $user) {
 		return $this->checkPermission($user, 'groups.create');

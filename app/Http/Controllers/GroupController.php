@@ -25,9 +25,9 @@ class GroupController extends Controller {
 	}
 
 	public function show($group) {
-		$group = Group::findOrFail($group);
-
-		return view('group.details', ['group' => $group]);
+		$model = Group::findOrFail($group);
+		$this->authorize('view', $model);
+		return view('group.details', ['group' => $model]);
 	}
 	
 	public function create() {

@@ -18,9 +18,9 @@ class AudioController extends Controller {
 	}
 
 	public function show($audio) {
-		$record = Audio::where('id', $audio)->where('status', C::FILE_STATUS_READY)->firstOrFail();
-		$this->authorize('view', [Bucket::class, $record->bucket]);
-		return view('audio.details', ['audio' => $record]);
+		$model = Audio::where('id', $audio)->where('status', C::FILE_STATUS_READY)->firstOrFail();
+		$this->authorize('view', [Bucket::class, $model->bucket]);
+		return view('audio.details', ['audio' => $model]);
 	}
 	
 	public function create(Request $request) {

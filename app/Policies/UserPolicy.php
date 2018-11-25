@@ -6,11 +6,6 @@ use Illuminate\Auth\Access\HandlesAuthorization;
 
 class UserPolicy extends AbstractPolicy {
     use HandlesAuthorization;
-
-    public function __construct()
-    {
-        //
-    }
 	
 	public function view(User $user) {
 		return $this->checkPermission($user, 'users.view');

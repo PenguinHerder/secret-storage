@@ -23,7 +23,7 @@
 		</div>
 		@endforeach
 
-		@can('create', [App\Models\Bucket::class, $group->id])
+		@can('create', [App\Models\Bucket::class, $group])
 		<div class="col-md-4">
 			<div class="card bg-info">
 				<div class="card-header">

@@ -35,7 +35,7 @@ class RolesTableSeeder extends Seeder
         ]);
 		
         DB::table('roles')->insert([
-            'name' => 'default',
+            'name' => 'basic',
             'permissions' => json_encode([
 				'buckets' => [
 					'create' => true,
