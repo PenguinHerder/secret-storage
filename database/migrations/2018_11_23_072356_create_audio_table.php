@@ -23,7 +23,6 @@ class CreateAudioTable extends Migration
 			$table->smallInteger('duration');
 			$table->integer('upload_filesize');
 			$table->integer('filesize');
-			$table->text('analysis');
 			$table->text('transcription');
 			$table->tinyInteger('status');
 			$table->timestamps();
