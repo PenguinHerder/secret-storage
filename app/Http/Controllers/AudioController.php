@@ -20,6 +20,7 @@ class AudioController extends Controller {
 	public function show($audio) {
 		$model = Audio::where('id', $audio)->where('status', C::FILE_STATUS_READY)->firstOrFail();
 		$this->authorize('view', [Bucket::class, $model->bucket]);
+		$model->load(['analyses', 'analyses.author']);
 		return view('audio.details', ['audio' => $model]);
 	}
 	

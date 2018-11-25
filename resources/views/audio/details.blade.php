@@ -5,8 +5,8 @@
 	<div class="alert alert-primary">
 		{{ $audio->name }}
 	</div>
-    <div class="row">
-		<div class="col-md-7">
+	<div class="row">
+		<div class="col-md-6">
 			<table class="table">
 				<tbody>
 					<tr>
@@ -37,12 +37,14 @@
 				</tbody>
 			</table>
 		</div>
-		<div class="col-md-5">
-			<audio controls src="{{ route('raw_audio', ['id' => $audio->id]) }}" style="width:100%">
-				Your browser does not support the
-				<code>audio</code> element.
-			</audio>
+		<div class="col-md-6">
+			<audio-panel
+				:audio='{{ json_encode($audio) }}'
+				:is-owner='{{ $audio->bucket->owner_id == Auth::user()->id ? 'true' : 'false' }}'
+				uri='{{ route('raw_audio', ['id' => $audio->id]) }}'></audio-panel>
 		</div>
     </div>
+	
+	
 </div>
 @endsection
