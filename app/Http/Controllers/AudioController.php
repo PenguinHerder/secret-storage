@@ -102,11 +102,7 @@ class AudioController extends Controller {
 			]
         )->validate();
 		
-		$model->analyses()->create([
-			'user_id' => Auth::user()->id,
-			'sections' => $data,
-			'approved' => false,
-		]);
+		$this->analysisToDB($model, $data);
 		
 		return response()->json([
 			'status' => 'success',
@@ -131,5 +127,21 @@ class AudioController extends Controller {
 			'analyses' => $model->analyses()->with('author')->get(),
 		]);
 		
+	}
+	
+	protected function analysisToDB(Audio $audio, array $data) {
+		$exists = $audio->analyses()->where('user_id', Auth::user()->id)->first();
+		if($exists) {
+			$exists->sections = $data;
+			$exists->approved = false;
+			$exists->save();
+		}
+		else {
+			$audio->analyses()->create([
+				'user_id' => Auth::user()->id,
+				'sections' => $data,
+				'approved' => false,
+			]);
+		}
 	}
 }

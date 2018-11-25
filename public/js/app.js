@@ -47486,6 +47486,10 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+//
+//
+//
+//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
 	props: {
@@ -47519,6 +47523,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 			if (this.audio.analyses[i].user_id === this.userId) {
 				this.hasOwnAnalysis = true;
 				this.analysis = this.audio.analyses[i].sections;
+				this.section.start = this.analysis[this.analysis.length - 1].end;
 				this.selectedAnalysisId = this.audio.analyses[i].id;
 			}
 		}
@@ -47538,6 +47543,12 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 	},
 
 	methods: {
+		removeLastItemClick: function removeLastItemClick() {
+			if (this.analysis.length > 0) {
+				this.analysis.pop();
+				this.section.start = this.analysis.length ? this.analysis[this.analysis.length - 1].end : 0;
+			}
+		},
 		approveAnalysisClick: function approveAnalysisClick() {
 			var _this = this;
 
@@ -47546,6 +47557,11 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 			}).then(function (response) {
 				_this.audio.analyses = response.data.analyses;
 				_this.displayMessage("This analysis is now visible to everyone, Thank you! :)", 'success');
+
+				// to trigger recomputation of selectedAnalysis
+				var tmp = _this.selectedAnalysisId;
+				_this.selectedAnalysisId = null;
+				_this.selectedAnalysisId = tmp;
 			}).catch(function (error) {
 				_this.displayMessage(error.response.data.message, 'danger');
 			});
@@ -47810,7 +47826,7 @@ var render = function() {
             _c(
               "tbody",
               [
-                _vm._l(_vm.analysis, function(section) {
+                _vm._l(_vm.analysis, function(section, index) {
                   return _c("tr", [
                     _c("td", [
                       _vm._v(_vm._s(_vm.secondsToTime(section.start)))
@@ -47824,7 +47840,18 @@ var render = function() {
                       )
                     ]),
                     _vm._v(" "),
-                    _c("td")
+                    _c("td", [
+                      index === _vm.analysis.length - 1
+                        ? _c(
+                            "button",
+                            {
+                              staticClass: "btn btn-sm btn-link",
+                              on: { click: _vm.removeLastItemClick }
+                            },
+                            [_c("i", { staticClass: "fa fa-times" })]
+                          )
+                        : _vm._e()
+                    ])
                   ])
                 }),
                 _vm._v(" "),

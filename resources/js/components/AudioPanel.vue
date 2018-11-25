@@ -61,11 +61,15 @@
 					</tr>
 				</thead>
 				<tbody>
-					<tr v-for="section in analysis">
+					<tr v-for="(section, index) in analysis">
 						<td>{{ secondsToTime(section.start) }}</td>
 						<td>{{ secondsToTime(section.end) }}</td>
 						<td>{{ section.noise ? "[Noise]" : section.content }}</td>
-						<td></td>
+						<td>
+							<button v-if="index === (analysis.length- 1)" @click="removeLastItemClick" class="btn btn-sm btn-link">
+								<i class="fa fa-times"></i>
+							</button>
+						</td>
 					</tr>
 					<tr v-if="error">
 						<td colspan="4">
@@ -139,6 +143,7 @@
 				if(this.audio.analyses[i].user_id === this.userId) {
 					this.hasOwnAnalysis = true
 					this.analysis = this.audio.analyses[i].sections
+					this.section.start = this.analysis[this.analysis.length - 1].end
 					this.selectedAnalysisId = this.audio.analyses[i].id
 				}
 			}
@@ -157,12 +162,24 @@
 		},
 
 		methods: {
+			removeLastItemClick() {
+				if(this.analysis.length > 0) {
+					this.analysis.pop()
+					this.section.start = this.analysis.length ? this.analysis[this.analysis.length - 1].end : 0
+				}
+			},
+
 			approveAnalysisClick() {
 				axios.post(this.approveAnalysisUri, {
 					id: this.selectedAnalysisId
 				}).then(response => {
 					this.audio.analyses = response.data.analyses
 					this.displayMessage("This analysis is now visible to everyone, Thank you! :)", 'success')
+
+					// silly round to trigger recomputation of selectedAnalysis
+					const tmp = this.selectedAnalysisId
+					this.selectedAnalysisId = null
+					this.selectedAnalysisId = tmp 
 				}).catch(error => {
 					this.displayMessage(error.response.data.message, 'danger')
 				})
