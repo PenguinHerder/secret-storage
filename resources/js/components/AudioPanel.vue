@@ -1,11 +1,43 @@
 <template>
 	<div>
-		<div class="row">
+		<div v-if="message" class="row">
 			<div class="col-md-12">
-				<button @click="showAnalysis = !showAnalysis" class="btn btn-primary float-right">{{ showAnalysis ? "Hide" : "Create new content analysis" }}</button>
+				<div :class="messageType">{{ message }}</div>
+			</div>
+		</div>
+		<div class="row">
+			<div class="col-md-6">
+				<select v-if="!showAnalysis && audio.analyses.length > 0" v-model="selectedAnalysisId" class="form-control">
+					<option v-for="analysis in audio.analyses" :value="analysis.id">By {{ analysis.author.name }}</option>
+				</select>
+			</div>
+			<div class="col-md-6">
+				<button @click="showAnalysis = !showAnalysis" class="btn btn-primary float-right">{{ showAnalysis ? "Hide" : (hasOwnAnalysis ? "Edit your analysis" : "Create new content analysis") }}</button>
 			</div>
 		</div>
 		<hr>
+		<div v-if="!showAnalysis">
+			<table class="table table-sm">
+				<thead>
+					<tr>
+						<th>Start</th>
+						<th>Content</th>
+						<th>Jump</th>
+					</tr>
+				</thead>
+				<tbody>
+					<tr v-for="section in selectedAnalysis">
+						<td>{{ secondsToTime(section.start) }}</td>
+						<td>{{ section.noise ? "[Noise]" : section.content }}</td>
+						<td>
+							<button class="btn btn-sm btn-info">
+								<i class="fa fa-play"></i>
+							</button>
+						</td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
 		<div v-if="showAnalysis" class="analysis-table">
 			<table class="table table-sm">
 				<thead>
@@ -65,7 +97,7 @@
     export default {
 		props: {
 			audio: Object,
-			isOwner: Boolean,
+			userId: Number,
 			audioUri: String,
 			saveAnalysisUri: String,
 		},
@@ -77,12 +109,40 @@
 				section: { start: 0, end: null, noise: false, content: "" },
 				sectionEndModel: '',
 				error: null,
+				message: null,
+				messageType: ['alert', 'alert-success'],
+				selectedAnalysisId: null,
+				hasOwnAnalysis: false,
 			}
 		},
 
         mounted() {
-            console.log(this.audio, this.isOwner)
+            console.log(this.audio)
+
+			if(this.audio.analyses.length > 0) {
+				this.selectedAnalysis = this.audio.analyses[0].id
+			}
+
+			for(let i in this.audio.analyses) {
+				if(this.audio.analyses[i].user_id === this.userId) {
+					this.hasOwnAnalysis = true
+					this.analysis = this.audio.analyses[i].sections
+					this.selectedAnalysisId = this.audio.analyses[i].id
+				}
+			}
         },
+
+		computed: {
+			selectedAnalysis: function() {
+				for(let i in this.audio.analyses) {
+					if(this.audio.analyses[i].id === this.selectedAnalysisId) {
+						return this.audio.analyses[i].sections
+					}
+				}
+
+				return []
+			}
+		},
 
 		methods: {
 			saveAnalysisClick() {
@@ -98,10 +158,18 @@
 				axios.post(this.saveAnalysisUri, {
 					data: JSON.stringify(this.analysis)
 				}).then(response => {
-					console.log(response.data)
+					this.audio.analyses = response.data.analyses
+					this.displayMessage("Your analysis has been saved for the review, Thank you! :)", 'success')
 				}).catch(error => {
-					console.log(error.response.data)
+					this.displayMessage(error.response.data.message, 'danger')
 				})
+			},
+
+			displayMessage(message, type) {
+				this.messageType = ['alert', 'alert-' + type]
+				this.message = message
+				this.showAnalysis = false
+				setTimeout(() => { this.message = null }, 4000)
 			},
 
 			currentTimeClick() {

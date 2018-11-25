@@ -40,7 +40,7 @@
 		<div class="col-md-6">
 			<audio-panel
 				:audio='{{ json_encode($audio) }}'
-				:is-owner='{{ $audio->bucket->owner_id == Auth::user()->id ? 'true' : 'false' }}'
+				:user-id='{{ Auth::user()->id }}'
 				audio-uri='{{ route('raw_audio', ['audio' => $audio->id]) }}'
 				save-analysis-uri='{{ route('save_analysis', ['audio' => $audio->id]) }}'></audio-panel>
 		</div>

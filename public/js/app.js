@@ -47442,11 +47442,43 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
 	props: {
 		audio: Object,
-		isOwner: Boolean,
+		userId: Number,
 		audioUri: String,
 		saveAnalysisUri: String
 	},
@@ -47457,13 +47489,41 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 			analysis: [],
 			section: { start: 0, end: null, noise: false, content: "" },
 			sectionEndModel: '',
-			error: null
+			error: null,
+			message: null,
+			messageType: ['alert', 'alert-success'],
+			selectedAnalysisId: null,
+			hasOwnAnalysis: false
 		};
 	},
 	mounted: function mounted() {
-		console.log(this.audio, this.isOwner);
+		console.log(this.audio);
+
+		if (this.audio.analyses.length > 0) {
+			this.selectedAnalysis = this.audio.analyses[0].id;
+		}
+
+		for (var i in this.audio.analyses) {
+			if (this.audio.analyses[i].user_id === this.userId) {
+				this.hasOwnAnalysis = true;
+				this.analysis = this.audio.analyses[i].sections;
+				this.selectedAnalysisId = this.audio.analyses[i].id;
+			}
+		}
 	},
 
+
+	computed: {
+		selectedAnalysis: function selectedAnalysis() {
+			for (var i in this.audio.analyses) {
+				if (this.audio.analyses[i].id === this.selectedAnalysisId) {
+					return this.audio.analyses[i].sections;
+				}
+			}
+
+			return [];
+		}
+	},
 
 	methods: {
 		saveAnalysisClick: function saveAnalysisClick() {
@@ -47474,13 +47534,26 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 			}
 		},
 		saveAnalysis: function saveAnalysis() {
+			var _this = this;
+
 			axios.post(this.saveAnalysisUri, {
 				data: JSON.stringify(this.analysis)
 			}).then(function (response) {
-				console.log(response.data);
+				_this.audio.analyses = response.data.analyses;
+				_this.displayMessage("Your analysis has been saved for the review, Thank you! :)", 'success');
 			}).catch(function (error) {
-				console.log(error.response.data);
+				_this.displayMessage(error.response.data.message, 'danger');
 			});
+		},
+		displayMessage: function displayMessage(message, type) {
+			var _this2 = this;
+
+			this.messageType = ['alert', 'alert-' + type];
+			this.message = message;
+			this.showAnalysis = false;
+			setTimeout(function () {
+				_this2.message = null;
+			}, 4000);
 		},
 		currentTimeClick: function currentTimeClick() {
 			this.section.end = Math.floor(this.$refs.audio.currentTime);
@@ -47504,7 +47577,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 			}
 		},
 		validate: function validate() {
-			if (!/^\d{2,3}:\d{2}$/.test(this.sectionEndModel)) {
+			if (!/^\d{2,3}:[0-5]\d$/.test(this.sectionEndModel)) {
 				this.error = "invalid end time";
 				return false;
 			}
@@ -47547,8 +47620,55 @@ var render = function() {
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
   return _c("div", [
+    _vm.message
+      ? _c("div", { staticClass: "row" }, [
+          _c("div", { staticClass: "col-md-12" }, [
+            _c("div", { class: _vm.messageType }, [_vm._v(_vm._s(_vm.message))])
+          ])
+        ])
+      : _vm._e(),
+    _vm._v(" "),
     _c("div", { staticClass: "row" }, [
-      _c("div", { staticClass: "col-md-12" }, [
+      _c("div", { staticClass: "col-md-6" }, [
+        !_vm.showAnalysis && _vm.audio.analyses.length > 0
+          ? _c(
+              "select",
+              {
+                directives: [
+                  {
+                    name: "model",
+                    rawName: "v-model",
+                    value: _vm.selectedAnalysisId,
+                    expression: "selectedAnalysisId"
+                  }
+                ],
+                staticClass: "form-control",
+                on: {
+                  change: function($event) {
+                    var $$selectedVal = Array.prototype.filter
+                      .call($event.target.options, function(o) {
+                        return o.selected
+                      })
+                      .map(function(o) {
+                        var val = "_value" in o ? o._value : o.value
+                        return val
+                      })
+                    _vm.selectedAnalysisId = $event.target.multiple
+                      ? $$selectedVal
+                      : $$selectedVal[0]
+                  }
+                }
+              },
+              _vm._l(_vm.audio.analyses, function(analysis) {
+                return _c("option", { domProps: { value: analysis.id } }, [
+                  _vm._v(_vm._s(analysis.author.name))
+                ])
+              })
+            )
+          : _vm._e()
+      ]),
+      _vm._v(" "),
+      _c("div", { staticClass: "col-md-6" }, [
         _c(
           "button",
           {
@@ -47561,7 +47681,13 @@ var render = function() {
           },
           [
             _vm._v(
-              _vm._s(_vm.showAnalysis ? "Hide" : "Create new content analysis")
+              _vm._s(
+                _vm.showAnalysis
+                  ? "Hide"
+                  : _vm.hasOwnAnalysis
+                  ? "Edit your analysis"
+                  : "Create new content analysis"
+              )
             )
           ]
         )
@@ -47570,10 +47696,33 @@ var render = function() {
     _vm._v(" "),
     _c("hr"),
     _vm._v(" "),
+    !_vm.showAnalysis
+      ? _c("div", [
+          _c("table", { staticClass: "table table-sm" }, [
+            _vm._m(0),
+            _vm._v(" "),
+            _c(
+              "tbody",
+              _vm._l(_vm.selectedAnalysis, function(section) {
+                return _c("tr", [
+                  _c("td", [_vm._v(_vm._s(_vm.secondsToTime(section.start)))]),
+                  _vm._v(" "),
+                  _c("td", [
+                    _vm._v(_vm._s(section.noise ? "[Noise]" : section.content))
+                  ]),
+                  _vm._v(" "),
+                  _vm._m(1, true)
+                ])
+              })
+            )
+          ])
+        ])
+      : _vm._e(),
+    _vm._v(" "),
     _vm.showAnalysis
       ? _c("div", { staticClass: "analysis-table" }, [
           _c("table", { staticClass: "table table-sm" }, [
-            _vm._m(0),
+            _vm._m(2),
             _vm._v(" "),
             _c(
               "tbody",
@@ -47768,6 +47917,30 @@ var render = function() {
   ])
 }
 var staticRenderFns = [
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("thead", [
+      _c("tr", [
+        _c("th", [_vm._v("Start")]),
+        _vm._v(" "),
+        _c("th", [_vm._v("Content")]),
+        _vm._v(" "),
+        _c("th", [_vm._v("Jump")])
+      ])
+    ])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("td", [
+      _c("button", { staticClass: "btn btn-sm btn-info" }, [
+        _c("i", { staticClass: "fa fa-play" })
+      ])
+    ])
+  },
   function() {
     var _vm = this
     var _h = _vm.$createElement
