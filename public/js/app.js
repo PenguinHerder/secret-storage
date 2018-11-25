@@ -47474,6 +47474,10 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+//
+//
+//
+//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
 	props: {
@@ -47500,7 +47504,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 		console.log(this.audio);
 
 		if (this.audio.analyses.length > 0) {
-			this.selectedAnalysis = this.audio.analyses[0].id;
+			this.selectedAnalysisId = this.audio.analyses[0].id;
 		}
 
 		for (var i in this.audio.analyses) {
@@ -47526,6 +47530,10 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 	},
 
 	methods: {
+		setPositionClick: function setPositionClick(position) {
+			this.$refs.audio.currentTime = position;
+			this.$refs.audio.play();
+		},
 		saveAnalysisClick: function saveAnalysisClick() {
 			if (this.analysis.length < 1) {
 				this.error = "Analysis is too short";
@@ -47619,7 +47627,9 @@ var render = function() {
   var _vm = this
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
-  return _c("div", [
+  return _c("div", { staticClass: "audio-content-analysis" }, [
+    _c("h4", [_vm._v("Audio Content Analysis")]),
+    _vm._v(" "),
     _vm.message
       ? _c("div", { staticClass: "row" }, [
           _c("div", { staticClass: "col-md-12" }, [
@@ -47631,40 +47641,48 @@ var render = function() {
     _c("div", { staticClass: "row" }, [
       _c("div", { staticClass: "col-md-6" }, [
         !_vm.showAnalysis && _vm.audio.analyses.length > 0
-          ? _c(
-              "select",
-              {
-                directives: [
-                  {
-                    name: "model",
-                    rawName: "v-model",
-                    value: _vm.selectedAnalysisId,
-                    expression: "selectedAnalysisId"
-                  }
-                ],
-                staticClass: "form-control",
-                on: {
-                  change: function($event) {
-                    var $$selectedVal = Array.prototype.filter
-                      .call($event.target.options, function(o) {
-                        return o.selected
-                      })
-                      .map(function(o) {
-                        var val = "_value" in o ? o._value : o.value
-                        return val
-                      })
-                    _vm.selectedAnalysisId = $event.target.multiple
-                      ? $$selectedVal
-                      : $$selectedVal[0]
-                  }
-                }
-              },
-              _vm._l(_vm.audio.analyses, function(analysis) {
-                return _c("option", { domProps: { value: analysis.id } }, [
-                  _vm._v(_vm._s(analysis.author.name))
-                ])
-              })
-            )
+          ? _c("div", [
+              _vm.audio.analyses.length > 1
+                ? _c(
+                    "select",
+                    {
+                      directives: [
+                        {
+                          name: "model",
+                          rawName: "v-model",
+                          value: _vm.selectedAnalysisId,
+                          expression: "selectedAnalysisId"
+                        }
+                      ],
+                      staticClass: "form-control",
+                      on: {
+                        change: function($event) {
+                          var $$selectedVal = Array.prototype.filter
+                            .call($event.target.options, function(o) {
+                              return o.selected
+                            })
+                            .map(function(o) {
+                              var val = "_value" in o ? o._value : o.value
+                              return val
+                            })
+                          _vm.selectedAnalysisId = $event.target.multiple
+                            ? $$selectedVal
+                            : $$selectedVal[0]
+                        }
+                      }
+                    },
+                    _vm._l(_vm.audio.analyses, function(analysis) {
+                      return _c(
+                        "option",
+                        { domProps: { value: analysis.id } },
+                        [_vm._v("By " + _vm._s(analysis.author.name))]
+                      )
+                    })
+                  )
+                : _c("span", [
+                    _vm._v("By " + _vm._s(_vm.audio.analyses[0].author.name))
+                  ])
+            ])
           : _vm._e()
       ]),
       _vm._v(" "),
@@ -47711,7 +47729,20 @@ var render = function() {
                     _vm._v(_vm._s(section.noise ? "[Noise]" : section.content))
                   ]),
                   _vm._v(" "),
-                  _vm._m(1, true)
+                  _c("td", [
+                    _c(
+                      "button",
+                      {
+                        staticClass: "btn btn-sm btn-info",
+                        on: {
+                          click: function($event) {
+                            _vm.setPositionClick(section.start)
+                          }
+                        }
+                      },
+                      [_c("i", { staticClass: "fa fa-play" })]
+                    )
+                  ])
                 ])
               })
             )
@@ -47722,7 +47753,7 @@ var render = function() {
     _vm.showAnalysis
       ? _c("div", { staticClass: "analysis-table" }, [
           _c("table", { staticClass: "table table-sm" }, [
-            _vm._m(2),
+            _vm._m(1),
             _vm._v(" "),
             _c(
               "tbody",
@@ -47928,16 +47959,6 @@ var staticRenderFns = [
         _c("th", [_vm._v("Content")]),
         _vm._v(" "),
         _c("th", [_vm._v("Jump")])
-      ])
-    ])
-  },
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c("td", [
-      _c("button", { staticClass: "btn btn-sm btn-info" }, [
-        _c("i", { staticClass: "fa fa-play" })
       ])
     ])
   },

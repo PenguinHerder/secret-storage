@@ -19,10 +19,20 @@
 	margin-bottom: 1.5em;
 }
 
-audio {
-	width: 100%;
+
+
+.audio-content-analysis {
+	background-color: darken($body-bg, 5%);
+	border: 1px solid darken($body-bg, 20%);
+	padding: 0.5em;
+	
+	audio {
+		width: 100%;
+	}
+	
+	.analysis-table {
+		margin-bottom: 5em;
+	}
 }
 
-.analysis-table {
-	margin-bottom: 5em;
-}
+

@@ -15793,11 +15793,17 @@ readers do not read off random characters that represent icons */
   margin-bottom: 1.5em;
 }
 
-audio {
+.audio-content-analysis {
+  background-color: #e6edf4;
+  border: 1px solid #b1c7dd;
+  padding: 0.5em;
+}
+
+.audio-content-analysis audio {
   width: 100%;
 }
 
-.analysis-table {
+.audio-content-analysis .analysis-table {
   margin-bottom: 5em;
 }
 

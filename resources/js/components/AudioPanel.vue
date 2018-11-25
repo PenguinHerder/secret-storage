@@ -1,5 +1,6 @@
 <template>
-	<div>
+	<div class="audio-content-analysis">
+		<h4>Audio Content Analysis</h4>
 		<div v-if="message" class="row">
 			<div class="col-md-12">
 				<div :class="messageType">{{ message }}</div>
@@ -7,9 +8,12 @@
 		</div>
 		<div class="row">
 			<div class="col-md-6">
-				<select v-if="!showAnalysis && audio.analyses.length > 0" v-model="selectedAnalysisId" class="form-control">
-					<option v-for="analysis in audio.analyses" :value="analysis.id">By {{ analysis.author.name }}</option>
-				</select>
+				<div v-if="!showAnalysis && audio.analyses.length > 0">
+					<select v-if="audio.analyses.length > 1" v-model="selectedAnalysisId" class="form-control">
+						<option v-for="analysis in audio.analyses" :value="analysis.id">By {{ analysis.author.name }}</option>
+					</select>
+					<span v-else>By {{ audio.analyses[0].author.name }}</span>
+				</div>
 			</div>
 			<div class="col-md-6">
 				<button @click="showAnalysis = !showAnalysis" class="btn btn-primary float-right">{{ showAnalysis ? "Hide" : (hasOwnAnalysis ? "Edit your analysis" : "Create new content analysis") }}</button>
@@ -30,7 +34,7 @@
 						<td>{{ secondsToTime(section.start) }}</td>
 						<td>{{ section.noise ? "[Noise]" : section.content }}</td>
 						<td>
-							<button class="btn btn-sm btn-info">
+							<button @click="setPositionClick(section.start)" class="btn btn-sm btn-info">
 								<i class="fa fa-play"></i>
 							</button>
 						</td>
@@ -120,7 +124,7 @@
             console.log(this.audio)
 
 			if(this.audio.analyses.length > 0) {
-				this.selectedAnalysis = this.audio.analyses[0].id
+				this.selectedAnalysisId = this.audio.analyses[0].id
 			}
 
 			for(let i in this.audio.analyses) {
@@ -145,6 +149,11 @@
 		},
 
 		methods: {
+			setPositionClick(position) {
+				this.$refs.audio.currentTime = position
+				this.$refs.audio.play()
+			},
+
 			saveAnalysisClick() {
 				if(this.analysis.length < 1) {
 					this.error = "Analysis is too short"
