@@ -2,9 +2,15 @@
 
 @section('content')
 <div class="container">
-	<div class="alert alert-primary">
-		Users
-	</div>
+	<h4>
+		<span>All members</span>
+		
+		@can('add', App\Models\User::class)
+		<small>
+			<a href="{{ route('members.create') }}">(<i class="fa fa-plus"></i> add)</a>
+		</small>
+		@endcan
+	</h4>
 	
 	<div class="row">
 		@foreach($users as $user)
@@ -15,23 +21,13 @@
 				</div>
 				<div class="card-body">
 						{{ $user->email }}<br>
-						{{ $user->role->name }}<br>
+						Permissions: {{ $user->role->name }}<br>
 						<hr>
-						{{ $user->groups->pluck('name')->implode(', ') }}
+						Groups: {{ $user->groups->pluck('name')->implode(', ') }}
 				</div>
 			</div>
 		</div>
 		@endforeach
-
-		@can('add', App\Models\User::class)
-		<div class="col-md-4">
-			<div class="card bg-info">
-				<div class="card-header">
-					<a href="{{ route('members.create') }}"><i class="fa fa-plus"></i> Add</a>
-				</div>
-			</div>
-		</div>
-		@endcan
 	</div>
 </div>
 @endsection

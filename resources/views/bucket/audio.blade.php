@@ -2,9 +2,15 @@
 
 @section('content')
 <div class="container">
-	<div class="alert alert-primary">
-		Available Audio Files
-	</div>
+	<h4>
+		<span>Available audio files in &quot;{{ $bucket->name }}&quot; bucket</span>
+		
+		@can('insert', [App\Models\Bucket::class, $bucket])
+		<small>
+			<a href="{{ route('audios.create', ['bucket' => $bucket->id]) }}">(<i class="fa fa-plus"></i> add file)</a>
+		</small>
+		@endcan
+	</h4>
 	
 	@if($bucket->resources->isEmpty())
 		<div class='alert alert-warning'>
@@ -18,7 +24,7 @@
 			<div class="card">
 				<div class="card-header">
 					@if($audio->status == App\PH\C::FILE_STATUS_READY)
-						<a href="{{ route('audios.show', ['audio' => $audio->id]) }}">{{ $audio->name }} ({{ $audio->date_taken }})</a>
+						<a href="{{ route('audios.show', ['audio' => $audio->id]) }}" style="display: block;">{{ $audio->name }} ({{ $audio->date_taken }})</a>
 					@else
 						<span>
 							{{ $audio->name }} (processing...) <i class='fa fa-cogs'></i>
@@ -31,16 +37,6 @@
 			</div>
 		</div>
 		@endforeach
-		
-		@can('insert', [App\Models\Bucket::class, $bucket])
-		<div class="col-md-4">
-			<div class="card bg-info">
-				<div class="card-header">
-					<a href="{{ route('audios.create', ['bucket' => $bucket->id]) }}"><i class="fa fa-plus"></i> Add file</a>
-				</div>
-			</div>
-		</div>
-		@endcan
 	</div>
 </div>
 @endsection

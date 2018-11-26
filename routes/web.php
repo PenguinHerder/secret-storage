@@ -2,7 +2,7 @@
 
 Auth::routes(['register' => false, 'reset' => false, 'verify' => false]);
 
-Route::redirect('/', '/groups', 301);
+Route::redirect('/', '/buckets', 301);
 Route::get('/logout', 'Auth\LoginController@logoutPage')->name('logout');
 
 Route::get('/raw/{audio}', 'AudioController@raw')->name('raw_audio');

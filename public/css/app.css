@@ -15780,9 +15780,22 @@ readers do not read off random characters that represent icons */
 }
 
 .navbar-laravel {
-  background-color: #fff;
+  background-color: rgba(255, 255, 255, 0.8);
   -webkit-box-shadow: 0 2px 4px rgba(0, 0, 0, 0.04);
           box-shadow: 0 2px 4px rgba(0, 0, 0, 0.04);
+}
+
+@media (min-width: 992px) {
+  .quote-background {
+    opacity: 0.92;
+    z-index: -1;
+    background: url(/img/forest.jpg) no-repeat center -100px;
+    position: fixed;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+  }
 }
 
 .with-separator {
@@ -15794,7 +15807,7 @@ readers do not read off random characters that represent icons */
 }
 
 .audio-content-analysis {
-  background-color: #eaf0f6;
+  background-color: #f1f5f9;
   border: 1px solid #b1c7dd;
   padding: 0.5em;
 }
@@ -15805,5 +15818,9 @@ readers do not read off random characters that represent icons */
 
 .audio-content-analysis .analysis-table {
   margin-bottom: 5em;
+}
+
+.container > h4 {
+  margin-bottom: 1.5em;
 }
 

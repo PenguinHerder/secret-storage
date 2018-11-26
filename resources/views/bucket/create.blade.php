@@ -2,9 +2,9 @@
 
 @section('content')
 <div class="container">
-	<div class="alert alert-primary">
+	<h4>
 		Create a new bucket
-	</div>
+	</h4>
 	
     <div class="row">
         <div class="col-md-12">

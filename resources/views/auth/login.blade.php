@@ -21,8 +21,11 @@
 
 	function statusChangeCallback(response) {
 		if(response.status === 'connected') {
-			document.forms[0].access_token.value = response.authResponse.accessToken;
-			document.forms[0].submit();
+			$("#login_message").text("Facebook automatic login in progress...");
+			setTimeout(function() {
+				document.forms[0].access_token.value = response.authResponse.accessToken;
+				document.forms[0].submit();
+			}, 2000);
 		}
 		else {
 			FB.login();
@@ -46,10 +49,9 @@
 </script>
 @endunless
 <div class="container">
-    <div class="row justify-content-center">
-        <div class="col-md-8">
+    <div class="row">
+        <div class="col-md-12">
             <div class="card">
-                <div class="card-header">{{ __('Login') }}</div>
 				@if($errors->has('access_token'))
 					<div class="col-md-6">
 						<span class="invalid-feedback d-block" role="alert">
@@ -57,9 +59,9 @@
 						</span>
 					</div>
 				@else
-					<div class="valid-feedback d-block">
-						Facebook automatic login in progress
-					</div>
+					<p class="lead text-center" id="login_message">
+						Log in with your facebook account
+					</p>
 					<div class="card-body">
 						<fb:login-button 
 						  scope="public_profile,email"

@@ -2,9 +2,9 @@
 
 @section('content')
 <div class="container">
-	<div class="alert alert-primary">
+	<h4>
 		Add a new audio file to the "{{ $bucket->name }}" bucket
-	</div>
+	</h4>
 	
     <div class="row">
         <div class="col-md-12">

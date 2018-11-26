@@ -7,8 +7,21 @@
 @import '~@fortawesome/fontawesome-free/scss/fontawesome';
 
 .navbar-laravel {
-  background-color: #fff;
+  background-color: rgba(255, 255, 255, 0.8);
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.04);
+}
+
+@include media-breakpoint-up(lg) {
+	.quote-background {
+		opacity: 0.92;
+		z-index: -1;
+		background: url(/img/forest.jpg) no-repeat center -100px;
+		position: fixed;
+		top: 0;
+		bottom: 0;
+		left: 0;
+		right: 0;
+	}
 }
 
 .with-separator {
@@ -19,10 +32,8 @@
 	margin-bottom: 1.5em;
 }
 
-
-
 .audio-content-analysis {
-	background-color: darken($body-bg, 4%);
+	background-color: darken($body-bg, 2%);
 	border: 1px solid darken($body-bg, 20%);
 	padding: 0.5em;
 	
@@ -35,4 +46,6 @@
 	}
 }
 
-
+.container > h4 {
+	margin-bottom: 1.5em;
+}

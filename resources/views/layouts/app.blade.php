@@ -11,6 +11,10 @@
 </head>
 <body>
     <div id="app">
+		@guest
+			<div class="quote-background"></div>
+		@endguest
+
         <nav class="navbar navbar-expand-md navbar-light navbar-laravel">
             <div class="container">
                 <a class="navbar-brand" href="{{ url('/') }}">
@@ -33,8 +37,22 @@
                                 <a class="nav-link" href="{{ route('login') }}">{{ __('Login') }}</a>
                             </li>
                         @else
-							<li class="nav-item dropdown with-separator">
-								<a class="nav-link" href="{{ route('groups.index') }}">Groups</a>
+							<li class="nav-item dropdown">
+								<a id="groupsDropdown" class="nav-link dropdown-toggle" href="#" role="button" data-toggle="dropdown" v-pre>
+									Groups <span class="caret"></span>
+								</a>
+								
+								<div class="dropdown-menu dropdown-menu-left">
+									<a class="dropdown-item" href="{{ route('groups.index') }}">
+										*ALL*
+									</a>
+									<div class="dropdown-divider"></div>
+									@foreach(Auth::user()->groups as $group)
+										<a class="dropdown-item" href="{{ route('groups.show', ['group' => $group->id]) }}">
+											{{ $group->name }}
+										</a>
+									@endforeach
+                                </div>
 							</li>
 							<li class="nav-item dropdown with-separator">
 								<a class="nav-link" href="{{ route('buckets.index') }}">Buckets</a>
@@ -46,7 +64,7 @@
 							@endcan
 							
                             <li class="nav-item dropdown">
-                                <a id="navbarDropdown" class="nav-link dropdown-toggle" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>
+                                <a id="navbarDropdown" class="nav-link dropdown-toggle" href="#" role="button" data-toggle="dropdown" v-pre>
                                     Logged as {{ Auth::user()->name }} <span class="caret"></span>
                                 </a>
 					

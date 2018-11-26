@@ -2,9 +2,9 @@
 
 @section('content')
 <div class="container">
-	<div class="alert alert-primary">
+	<h4>
 		{{ $audio->name }}
-	</div>
+	</h4>
 	<div class="row">
 		<div class="col-md-6">
 			<table class="table">

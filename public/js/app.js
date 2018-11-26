@@ -47558,7 +47558,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 				_this.audio.analyses = response.data.analyses;
 				_this.displayMessage("This analysis is now visible to everyone, Thank you! :)", 'success');
 
-				// to trigger recomputation of selectedAnalysis
+				// silly round to trigger recomputation of selectedAnalysis
 				var tmp = _this.selectedAnalysisId;
 				_this.selectedAnalysisId = null;
 				_this.selectedAnalysisId = tmp;

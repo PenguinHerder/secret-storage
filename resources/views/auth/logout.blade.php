@@ -5,12 +5,10 @@
     <div class="row justify-content-center">
         <div class="col-md-8">
             <div class="card">
-                <div class="card-header">Bye Bye</div>
-
                 <div class="card-body">
-                    <div class="valid-feedback d-block">
+                    <p class="lead text-center">
 						You have successfully logged out!
-					</div>
+					</p>
                 </div>
             </div>
         </div>

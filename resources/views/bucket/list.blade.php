@@ -2,23 +2,25 @@
 
 @section('content')
 <div class="container">
-	<div class="alert alert-primary">
-		Buckets
-	</div>
+	<h4>
+		Your Buckets
+	</h4>
 	
 	<div class="row">
 		@foreach($buckets as $bucket)
 		<div class="col-md-4">
 			<div class="card">
-				<div class="card-header">
-					<a href="{{ route('buckets.show', ['id' => $bucket->id]) }}">
-						{{ $bucket->name }}
-						<i class="fa {{ bucket_icon($bucket->type) }}"></i>
-					</a>
-				</div>
-				<div class="card-body">
-					{{ $bucket->description }}
-				</div>
+				<a href="{{ route('buckets.show', ['id' => $bucket->id]) }}" style="display: block;">
+					<div class="card-body">
+						<h5>
+							{{ $bucket->name }}
+						</h5>
+						<hr>
+						<p>
+							{{ $bucket->description }}
+						</p>
+					</div>
+				</a>
 			</div>
 		</div>
 		@endforeach
