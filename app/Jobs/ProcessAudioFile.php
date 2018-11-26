@@ -48,6 +48,8 @@ class ProcessAudioFile implements ShouldQueue {
 		$this->audio->filesize = $size;
 		$this->audio->status = C::FILE_STATUS_READY;
 		$this->audio->save();
+		
+		$this->fs->delete($this->input . '/' . $this->audio->filename . '.wav');
 	}
 	
 	protected function compress() {
