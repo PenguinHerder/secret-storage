@@ -8,9 +8,10 @@ trait RunTrait {
 	
 	protected $parser;
 	
-	protected function execute(string $command, string $parser = null, bool $mustRun = true) {
+	protected function execute(string $command, string $parser = null, bool $mustRun = true, $timeout = 10) {
 		$run = CommandFinder::replace($command);
 		$process = new Process($run);
+		$process->setTimeout($timeout)->setIdleTimeout($timeout);
 		$mustRun ? $process->mustRun() : $process->run();
 		
 		$data = [

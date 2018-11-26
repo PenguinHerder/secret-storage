@@ -54,7 +54,7 @@ class ProcessAudioFile implements ShouldQueue {
 		$input = $this->tmp . '/sample_rate_reduce.wav';
 		$output = $this->output . '/' . $this->audio->filename . '.mp3';
 		$cmd = "lame -b 96 -h {$input} {$output}";
-		$this->execute($cmd, null, true);
+		$this->execute($cmd, null, true, 180);
 	}
 	
 	protected function reduceNoise() {
@@ -62,10 +62,10 @@ class ProcessAudioFile implements ShouldQueue {
 		$output = $this->tmp . '/reduced_noise.wav';
 		$profile = $this->tmp . '/noise_profile';
 		$acquireCommand = "sox {$input} -n trim 1 2 noiseprof {$profile}";
-		$this->execute($acquireCommand, null, true);
+		$this->execute($acquireCommand, null, true, 30);
 		
 		$reduceCommand = "sox {$input} {$output} noisered {$profile} 0.33";
-		$this->execute($reduceCommand, null, true);
+		$this->execute($reduceCommand, null, true, 120);
 	}
 	
 	protected function updateDuration(array $data) {
@@ -79,7 +79,7 @@ class ProcessAudioFile implements ShouldQueue {
 		$input = $this->input . '/' . $this->audio->filename . '.wav';
 		$output = $this->tmp . '/sample_rate_reduce.wav';
 		$cmd = "sox -V3 {$input} -r 22500 -c 1 {$output}";
-		return $this->execute($cmd, 'ReduceSampleRate', true);
+		return $this->execute($cmd, 'ReduceSampleRate', true, 120);
 	}
 	
 	protected function createTmpFolder() {
