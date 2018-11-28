@@ -29,6 +29,8 @@ files.keys().map(key => {
  * or customize the JavaScript scaffolding to fit your unique needs.
  */
 
-const app = new Vue({
-    el: '#app'
-});
+if(document.getElementById('app') !== null) {
+	const app = new Vue({
+		el: '#app'
+	});
+}
