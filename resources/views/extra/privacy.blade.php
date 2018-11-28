@@ -1,3 +1,7 @@
+@extends('layouts.app')
+
+@section('content')
+<div class="container">
 <h1>Privacy Policy</h1>
 
 
@@ -102,3 +106,5 @@
 	<li>By visiting this page on our website: http://highden.the7thletter.co.uk/contact</li>
       
 </ul>
+</div>
+@endsection
