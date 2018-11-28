@@ -10,7 +10,7 @@
     <link href="{{ asset('css/app.css') }}" rel="stylesheet">
 </head>
 <body>
-    <div id="app">
+    <div {{ Auth::guest() ? '' : 'id="app"' }}>
 		@guest
 			<div class="quote-background"></div>
 		@endguest
