@@ -36,16 +36,4 @@ class LoginController extends Controller
     public function __construct() {
         $this->middleware('guest')->except('logout');
     }
-	
-	public function logout(Request $request) {
-        $this->guard()->logout();
-
-        $request->session()->invalidate();
-
-        return $this->loggedOut($request) ?: redirect('/logout');
-    }
-	
-	public function logoutPage() {
-		return view('auth.logout');
-	}
 }

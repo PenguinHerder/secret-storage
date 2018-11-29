@@ -3,7 +3,6 @@
 Auth::routes(['register' => false, 'reset' => false, 'verify' => false]);
 
 Route::redirect('/', '/buckets', 301);
-Route::get('/logout', 'Auth\LoginController@logoutPage')->name('logout');
 
 Route::get('/raw/{audio}', 'AudioController@raw')->name('raw_audio');
 Route::get('/download/{audio}', 'AudioController@download')->name('raw_download');
