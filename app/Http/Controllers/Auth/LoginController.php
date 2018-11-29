@@ -48,18 +48,4 @@ class LoginController extends Controller
 	public function logoutPage() {
 		return view('auth.logout');
 	}
-	
-	protected function validateLogin(Request $request) {
-        $request->validate([
-            $this->username() => 'required|string',
-        ]);
-    }
-	
-	protected function credentials(Request $request) {
-        return $request->only($this->username());
-    }
-	
-	public function username() {
-        return 'access_token';
-    }
 }

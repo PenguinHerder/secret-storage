@@ -1,84 +1,63 @@
 @extends('layouts.app')
 
 @section('content')
-@unless($errors->has('access_token'))
-<script>
-	window.fbAsyncInit = function() {
-		FB.init({
-			appId      : '{{ config("ph.fb_login_id") }}',
-			cookie     : true,
-			xfbml      : true,
-			version    : 'v3.2'
-		});
-
-		FB.AppEvents.logPageView();  
-
-		FB.getLoginStatus(function(response) {
-			statusChangeCallback(response);
-		});
-	};
-
-
-	function statusChangeCallback(response) {
-		if(response.status === 'connected') {
-			$("#login_message").text("Facebook automatic login in progress...");
-			setTimeout(function() {
-				document.forms[0].access_token.value = response.authResponse.accessToken;
-				document.forms[0].submit();
-			}, 2000);
-		}
-		else {
-			FB.login();
-		}
-	}
-
-	function checkLoginState() {
-		FB.getLoginStatus(function(response) {
-			statusChangeCallback(response);
-		});
-	 }
-
-	(function(d, s, id){
-		var js, fjs = d.getElementsByTagName(s)[0];
-		if (d.getElementById(id)) {return;}
-		js = d.createElement(s); js.id = id;
-		js.src = "https://connect.facebook.net/en_US/sdk.js";
-		fjs.parentNode.insertBefore(js, fjs);
-	 }(document, 'script', 'facebook-jssdk'));
-	 
-</script>
-@endunless
 <div class="container">
     <div class="row">
         <div class="col-md-12">
-            <div class="card">
-				@if($errors->has('access_token'))
-					<div class="col-md-6">
-						<span class="invalid-feedback d-block" role="alert">
-							<strong>{{ $errors->first('access_token') }}</strong>
-						</span>
+            <div class="card-body">
+				<form method="POST" action="{{ route('login') }}">
+					@csrf
+
+					<div class="form-group row">
+						<label for="email" class="col-sm-4 col-form-label text-md-right">{{ __('E-Mail Address') }}</label>
+
+						<div class="col-md-6">
+							<input id="email" type="email" class="form-control{{ $errors->has('email') ? ' is-invalid' : '' }}" name="email" value="{{ old('email') }}" required autofocus>
+
+							@if ($errors->has('email'))
+								<span class="invalid-feedback" role="alert">
+									<strong>{{ $errors->first('email') }}</strong>
+								</span>
+							@endif
+						</div>
 					</div>
-				@else
-					<p class="lead text-center" id="login_message">
-						Log in with your facebook account
-					</p>
-					<div class="card-body">
-						<fb:login-button 
-						  scope="public_profile,email"
-						  onlogin="checkLoginState();">
-						</fb:login-button>
+
+					<div class="form-group row">
+						<label for="password" class="col-md-4 col-form-label text-md-right">{{ __('Password') }}</label>
+
+						<div class="col-md-6">
+							<input id="password" type="password" class="form-control{{ $errors->has('password') ? ' is-invalid' : '' }}" name="password" required>
+
+							@if ($errors->has('password'))
+								<span class="invalid-feedback" role="alert">
+									<strong>{{ $errors->first('password') }}</strong>
+								</span>
+							@endif
+						</div>
 					</div>
-				@endif
-            </div>
+
+					<div class="form-group row">
+						<div class="col-md-6 offset-md-4">
+							<div class="form-check">
+								<input class="form-check-input" type="checkbox" name="remember" id="remember" {{ old('remember') ? 'checked' : '' }}>
+
+								<label class="form-check-label" for="remember">
+									{{ __('Remember Me') }}
+								</label>
+							</div>
+						</div>
+					</div>
+
+					<div class="form-group row mb-0">
+						<div class="col-md-8 offset-md-4">
+							<button type="submit" class="btn btn-primary">
+								{{ __('Login') }}
+							</button>
+						</div>
+					</div>
+				</form>
+			</div>
         </div>
     </div>
-	<form method="POST" action="{{ route('login') }}">
-		@csrf
-
-		<div class="col-md-6">
-			<input name="access_token" type="hidden" id="access_token" value="">
-		</div>
-	</form>
-
 </div>
 @endsection

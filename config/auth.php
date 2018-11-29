@@ -66,7 +66,8 @@ return [
 
     'providers' => [
         'users' => [
-            'driver' => 'fb_login',
+            'driver' => 'eloquent',
+            'model' => App\Models\User::class,
         ],
 
         // 'users' => [
