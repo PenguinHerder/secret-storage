@@ -20,6 +20,7 @@ class CreateUsersTable extends Migration
 			$table->integer('role_id')->unsigned();
 			$table->string('password');
             $table->rememberToken();
+			$table->string('registration_token')->nullable()->unique()->collation('ascii_bin');
             $table->timestamps();
 			
 			$table->foreign('role_id')->references('id')->on('roles')->onDelete('restrict');

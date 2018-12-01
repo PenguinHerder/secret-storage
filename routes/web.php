@@ -1,6 +1,8 @@
 <?php
 
 Auth::routes(['register' => false, 'reset' => false, 'verify' => false]);
+Route::get('/invitation/{token}', 'MemberController@join')->name('join');
+Route::post('/invitation/complete', 'MemberController@complete')->name('complete');
 
 Route::redirect('/', '/buckets', 301);
 

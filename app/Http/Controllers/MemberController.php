@@ -13,7 +13,30 @@ use Illuminate\Validation\Rule;
 class MemberController extends Controller {
 
 	public function __construct() {
-		$this->middleware('auth');
+		$this->middleware('auth')->except(['join', 'complete']);
+		$this->middleware('guest')->only(['join', 'complete']);
+	}
+	
+	public function join($token) {
+		$user = User::where('registration_token', $token)->firstOrFail();
+		return view('members.join', ['user' => $user, 'token' => $token]);
+	}
+	
+	public function complete(Request $request) {
+		$this->validate($request, [
+			'token' => ['required', 'string', 'min:5', 'exists:users,registration_token'],
+			'password' => ['required', 'string', 'between: 7,20'],
+			'password_confirmation' => ['required', 'string', 'same_as:password'],
+		]);
+		
+		$user = User::where('registration_token', $request->get('token'))->firstOrFail();
+		$user->password = Hash::make($request->get('password'));
+		$user->save();
+		
+		session()->flash('login_email', $user->email);
+		session()->flash('message', __('auth.registration_complete'));
+		
+		return redirect()->route('login');
 	}
 
 	public function index() {
@@ -52,12 +75,21 @@ class MemberController extends Controller {
 			'groups.*' => Rule::in($groups->pluck('id'))
 		]);
 		
-		DB::transaction(function() use($request) {
-			$fields = $request->only(['name', 'email', 'role']);
-			$user = User::create(['name' => $fields['name'], 'email' => $fields['email'], 'role_id' => $fields['role']]);
+		DB::transaction(function() use($request) {	
+			$token = str_random(64);
+			$user = User::create([
+				'name' => $request->get('name'),
+				'email' => $request->get('email'),
+				'role_id' => $request->get('role'),
+				'password' => '',
+				'registration_token' => $token,
+			]);
+			
 			foreach($request->get('groups') as $group) {
 				$user->groups()->attach($group);
 			}
+			
+			event(new \App\Events\NewMemberAdded($user, Auth::user()));
 		});
 		
 		return redirect()->route('members.index');

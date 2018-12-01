@@ -5,6 +5,12 @@
     <div class="row">
         <div class="col-md-12">
             <div class="card-body">
+				@if(session()->has('message'))
+					<p class="lead">
+						{{ session()->flash('message') }}
+					</p>
+				@endif
+					
 				<form method="POST" action="{{ route('login') }}">
 					@csrf
 
@@ -12,7 +18,7 @@
 						<label for="email" class="col-sm-4 col-form-label text-md-right">{{ __('E-Mail Address') }}</label>
 
 						<div class="col-md-6">
-							<input id="email" type="email" class="form-control{{ $errors->has('email') ? ' is-invalid' : '' }}" name="email" value="{{ old('email') }}" required autofocus>
+							<input id="email" type="email" class="form-control{{ $errors->has('email') ? ' is-invalid' : '' }}" name="email" value="{{ session()->flash('login_email') ?? old('email') }}" required autofocus>
 
 							@if ($errors->has('email'))
 								<span class="invalid-feedback" role="alert">
