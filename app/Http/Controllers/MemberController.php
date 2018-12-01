@@ -3,6 +3,7 @@ namespace App\Http\Controllers;
 
 use DB;
 use Auth;
+use Hash;
 use App\PH\C;
 use App\Models\Role;
 use App\Models\User;
@@ -24,13 +25,13 @@ class MemberController extends Controller {
 	
 	public function complete(Request $request) {
 		$this->validate($request, [
-			'token' => ['required', 'string', 'min:5', 'exists:users,registration_token'],
-			'password' => ['required', 'string', 'between: 7,20'],
-			'password_confirmation' => ['required', 'string', 'same_as:password'],
+			'registration_token' => ['required', 'string', 'min:5', 'exists:users,registration_token'],
+			'password' => ['required', 'string', 'min:7', 'confirmed'],
 		]);
 		
-		$user = User::where('registration_token', $request->get('token'))->firstOrFail();
+		$user = User::where('registration_token', $request->get('registration_token'))->firstOrFail();
 		$user->password = Hash::make($request->get('password'));
+		$user->registration_token = null;
 		$user->save();
 		
 		session()->flash('login_email', $user->email);
