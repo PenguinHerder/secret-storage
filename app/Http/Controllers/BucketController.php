@@ -46,7 +46,7 @@ class BucketController extends Controller {
 		$group = Group::findOrFail($request->get('group_id'));
 		$this->authorize('create', [Bucket::class, $group]);
 		$this->validate($request, [
-			'name' => ['required', 'string', 'between:5,100', 'unique:groups,name'],
+			'name' => ['required', 'string', 'between:5,100'],
 			'description' => ['required', 'string', 'between:15,5000'],
 			'type' => \Illuminate\Validation\Rule::in([C::BUCKET_TYPE_AUDIO,]),
 			'group_id' => ['required', 'exists:groups,id'],

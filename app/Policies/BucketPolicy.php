@@ -33,6 +33,10 @@ class BucketPolicy extends AbstractPolicy {
 		return false;
 	}
 	
+	public function update(User $user, Bucket $bucket) {
+		return $this->insert($user, $bucket);
+	}
+	
 	public function before(User $user, $ability) {
 		return $this->beforeBone($user, $ability);
 	}

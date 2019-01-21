@@ -3,7 +3,10 @@
 @section('content')
 <div class="container">
 	<h4>
-		{{ $audio->name }}
+		<span>{{ $audio->name }}</span>
+		@can('update', $audio->bucket)
+			<a class="float-right" href="{{ route('audios.edit', $audio->id) }}">Edit</a>
+		@endcan
 	</h4>
 	<div class="row">
 		<div class="col-md-6">

@@ -14,4 +14,4 @@ Route::post('/analysis-approve/{audio}', 'AudioController@approveAnalysis')->nam
 Route::resource('groups', 'GroupController')->only(['index', 'create', 'show', 'store']);
 Route::resource('buckets', 'BucketController')->only(['index', 'create', 'show', 'store']);
 Route::resource('members', 'MemberController')->only(['index', 'create', 'show', 'store']);
-Route::resource('audios', 'AudioController')->only(['index', 'create', 'show', 'store']);
+Route::resource('audios', 'AudioController')->only(['index', 'create', 'show', 'store', 'edit', 'update']);
