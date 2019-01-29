@@ -20,7 +20,7 @@
 					<label for="name" class="col-sm-4 col-form-label text-md-right">Name</label>
 
 					<div class="col-md-6">
-						<input id="name" type="text" class="form-control{{ $errors->has('name') ? ' is-invalid' : '' }}" name="name" value="{{ old('name') ?? $audio->name }}" required autofocus>
+						<input id="name" type="text" class="form-control{{ $errors->has('name') ? ' is-invalid' : '' }}" name="name" value="{{ old('name') ?? $audio->name ?? '' }}" required autofocus>
 
 						@if ($errors->has('name'))
 							<span class="invalid-feedback" role="alert">
@@ -34,7 +34,7 @@
 					<label for="description" class="col-sm-4 col-form-label text-md-right">Description</label>
 
 					<div class="col-md-6">
-						<textarea id="description" class="form-control{{ $errors->has('description') ? ' is-invalid' : '' }}" name="description">{{ old('description') ?? $audio->description }}</textarea>
+						<textarea id="description" class="form-control{{ $errors->has('description') ? ' is-invalid' : '' }}" name="description">{{ old('description') ?? $audio->description ?? '' }}</textarea>
 
 						@if ($errors->has('description'))
 							<span class="invalid-feedback" role="alert">
@@ -48,7 +48,7 @@
 					<label for="date_taken" class="col-sm-4 col-form-label text-md-right">Date Taken</label>
 
 					<div class="col-md-6">
-						<input id="date_taken" type="date" class="form-control{{ $errors->has('date_taken') ? ' is-invalid' : '' }}" name="date_taken" value="{{ old('date_taken') ?? $audio->date_taken }}" required>
+						<input id="date_taken" type="date" class="form-control{{ $errors->has('date_taken') ? ' is-invalid' : '' }}" name="date_taken" value="{{ old('date_taken') ?? $audio->date_taken ?? '' }}" required>
 
 						@if ($errors->has('date_taken'))
 							<span class="invalid-feedback" role="alert">

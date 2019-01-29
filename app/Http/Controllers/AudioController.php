@@ -8,7 +8,6 @@ use App\Models\Bucket;
 use App\Models\Analysis;
 use Illuminate\Http\Request;
 use App\Jobs\ProcessAudioFile;
-use Illuminate\Validation\Rule;
 
 class AudioController extends Controller {
 	
@@ -39,7 +38,7 @@ class AudioController extends Controller {
 	public function create(Request $request) {
 		$bucket = Bucket::findOrFail($request->get('bucket'));
 		$this->authorize('insert', [Bucket::class, $bucket]);
-		return view('audio.insert', ['bucket' => $bucket]);
+		return view('audio.insert', ['bucket' => $bucket, 'audio' => null]);
 	}
 	
 	public function edit($audio) {

@@ -64,7 +64,7 @@ class ProcessAudioFile implements ShouldQueue {
 		$output = $this->tmp . '/reduced_noise.wav';
 		$profile = $this->tmp . '/noise_profile';
 		$acquireCommand = "sox {$input} -n trim 1 2 noiseprof {$profile}";
-		$this->execute($acquireCommand, null, true, 60);
+		$this->execute($acquireCommand, null, true, 120);
 		
 		$reduceCommand = "sox {$input} {$output} noisered {$profile} 0.33";
 		$this->execute($reduceCommand, null, true, 240);
