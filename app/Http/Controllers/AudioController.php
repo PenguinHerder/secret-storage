@@ -45,7 +45,7 @@ class AudioController extends Controller {
 	
 	public function edit($audio) {
 		$audioModel = Audio::findOrFail($audio);
-		$this->authorize('insert', [Bucket::class, $audioModel->bucket_id]);
+		$this->authorize('insert', [Bucket::class, $audioModel->bucket]);
 		return view('audio.insert', ['bucket' => $audioModel->bucket, 'audio' => $audioModel]);
 	}
 	
