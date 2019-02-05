@@ -49,7 +49,8 @@ class ProcessAudioFile implements ShouldQueue {
 		$this->audio->status = C::FILE_STATUS_READY;
 		$this->audio->save();
 		
-		$this->fs->delete($this->input . '/' . $this->audio->filename . '.wav');
+		$ext = $this->getInputFileExtension();
+		$this->fs->delete($this->input . '/' . $this->audio->filename . '.' . $ext);
 	}
 	
 	protected function compress() {
@@ -78,7 +79,8 @@ class ProcessAudioFile implements ShouldQueue {
 	}
 	
 	protected function reduceSampleRate() {
-		$input = $this->input . '/' . $this->audio->filename . '.wav';
+		$ext = $this->getInputFileExtension();
+		$input = $this->input . '/' . $this->audio->filename . '.' . $ext;
 		$output = $this->tmp . '/sample_rate_reduce.wav';
 		$cmd = "sox -V3 {$input} -r 22500 -c 1 {$output}";
 		return $this->execute($cmd, 'ReduceSampleRate', true, 240);
@@ -107,5 +109,9 @@ class ProcessAudioFile implements ShouldQueue {
 				$this->fs->makeDirectory($folder);
 			}
 		}
+	}
+	
+	protected function getInputFileExtension() {
+		return $this->audio->upload_type == C::UPLOAD_AUDIO_TYPE_WAV ? 'wav' : 'mp3';
 	}
 }

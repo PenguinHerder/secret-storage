@@ -6,7 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 class Audio extends Model {
 
     protected $fillable = [
-        'name', 'description', 'date_taken', 'filename', 'duration',
+        'name', 'description', 'date_taken', 'filename', 'duration', 'upload_type',
 		'upload_filesize', 'filesize', 'transcription', 'status',
     ];
 	

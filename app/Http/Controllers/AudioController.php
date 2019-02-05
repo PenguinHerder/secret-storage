@@ -6,10 +6,12 @@ use App\PH\C;
 use App\Models\Audio;
 use App\Models\Bucket;
 use App\Models\Analysis;
+use App\PH\Process\RunTrait;
 use Illuminate\Http\Request;
 use App\Jobs\ProcessAudioFile;
 
 class AudioController extends Controller {
+	use RunTrait;
 	
 	public function __construct() {
 		$this->middleware('auth');
@@ -71,17 +73,19 @@ class AudioController extends Controller {
 			'description' => ['required', 'string', 'between:10,5000'],
 			'date_taken' => ['required', 'date_format:Y-m-d'],
 			'bucket_id' => ['required', 'exists:buckets,id'],
-			'audio' => ['required', 'file', 'mimetypes:audio/x-wav']
+			'audio' => ['required', 'file', 'mimetypes:audio/x-wav,audio/mpeg,audio/mp3']
 		]);
 		
 		$data = $request->only(['name', 'description', 'date_taken']);
 		if($request->file('audio')->isValid()) {
+			$type = $this->execute('file -b --mime ' . $request->file('audio')->getPathname(), 'GetFileMimeType')['data'];
 			$audio = $bucket->resources()->create([
 				'name' => $data['name'],
 				'description' => $data['description'],
 				'date_taken' => $data['date_taken'],
 				'filename' => str_slug(substr($data['name'], 0, 23), '_') . '_' . str_random(8),
 				'duration' => 0,
+				'upload_type' => $type,
 				'upload_filesize' => $request->file('audio')->getSize(),
 				'filesize' => 0,
 				'analysis' => '',
@@ -89,7 +93,8 @@ class AudioController extends Controller {
 				'status' => C::FILE_STATUS_UPLOADED,
 			]);
 			
-			$request->file('audio')->storeAs('uploads/raw_audio', $audio->filename . '.wav');
+			$ext = $type == C::UPLOAD_AUDIO_TYPE_WAV ? '.wav' : '.mp3';
+			$request->file('audio')->storeAs('uploads/raw_audio', $audio->filename . $ext);
 			ProcessAudioFile::dispatch($audio);
 		}
 		

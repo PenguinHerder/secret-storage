@@ -63,7 +63,7 @@
 						<label for="audio" class="col-sm-4 col-form-label text-md-right">File (max. {{ bytesToHuman(getMaximumFileUploadSize()) }})</label>
 
 						<div class="col-md-6">
-							<input id="audio" type="file" class="form-control{{ $errors->has('audio') ? ' is-invalid' : '' }}" name="audio" accept="audio/x-wav">
+							<input id="audio" type="file" class="form-control{{ $errors->has('audio') ? ' is-invalid' : '' }}" name="audio" accept="audio/x-wav,audio/mp3,audio/mpeg">
 
 							@if ($errors->has('audio'))
 								<span class="invalid-feedback" role="alert">
