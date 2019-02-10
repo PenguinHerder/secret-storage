@@ -10,15 +10,11 @@
 			<div class="col-md-6">
 				<div v-if="!showAnalysis && audio.analyses.length > 0">
 					<select v-if="audio.analyses.length > 1" v-model="selectedAnalysisId" class="form-control">
-						<option v-for="analysis in audio.analyses" :value="analysis.id">By {{ analysis.author.name }} {{ analysis.approved ? '' : '(awaiting approval)' }}</option>
+						<option v-for="analysis in audio.analyses" :value="analysis.id">By {{ analysis.author.name }}</option>
 					</select>
 					<div v-else>
 						<span>By {{ audio.analyses[0].author.name }}</span>
-						<i v-if="audio.analyses[0].approved" class="fa fa-check"></i>
-						<small v-else>(awaiting approval)</small>
 					</div>
-
-					<button v-if="canApprove && !selectedAnalysis.approved" @click="approveAnalysisClick" class="btn btn-sm btn-info">Approve this analysis</button>
 				</div>
 			</div>
 			<div class="col-md-6">
@@ -40,7 +36,7 @@
 					<tr v-for="section in selectedAnalysis.sections">
 						<td>{{ secondsToTime(section.start) }}</td>
 						<td>{{ secondsToTime(section.end - section.start) }}</td>
-						<td>{{ section.noise ? "[Noise]" : section.content }}</td>
+						<td>{{ section.content }}</td>
 						<td>
 							<button @click="setPositionClick(section.start)" class="btn btn-sm btn-info">
 								<i class="fa fa-play"></i>
@@ -64,7 +60,7 @@
 					<tr v-for="(section, index) in analysis">
 						<td>{{ secondsToTime(section.start) }}</td>
 						<td>{{ secondsToTime(section.end) }}</td>
-						<td>{{ section.noise ? "[Noise]" : section.content }}</td>
+						<td>{{ section.content }}</td>
 						<td>
 							<button v-if="index === (analysis.length- 1)" @click="removeLastItemClick" class="btn btn-sm btn-link">
 								<i class="fa fa-times"></i>
@@ -77,17 +73,16 @@
 						</td>
 					</tr>
 					<tr>
-						<td>{{ secondsToTime(section.start) }}</td>
 						<td>
-							<input type="text" v-model="sectionEndModel" class="form-control"></br>
-							<button @click="currentTimeClick" class="btn btn-sm btn-secondary">Current time</button>
-							<button @click="endTimeClick" class="btn btn-sm btn-secondary">End</button>
+							<input type="text" v-model="sectionStartModel" class="form-control"></br>
+							<button @click="currentTimeStartClick" class="btn btn-sm btn-secondary">Set start time</button>
 						</td>
 						<td>
-							<input type="text" v-model="section.content" class="form-control"><br>
-							<label>
-								<input type="checkbox" v-model="section.noise"> Noise
-							</label>
+							<input type="text" v-model="sectionEndModel" class="form-control"></br>
+							<button @click="currentTimeEndClick" class="btn btn-sm btn-secondary">Set end time</button>
+						</td>
+						<td>
+							<input type="text" v-model="section.content" class="form-control">
 						</td>
 						<td>
 							<button @click="addSectionClick" class="btn btn-primary float-right">Add</button>
@@ -124,7 +119,8 @@
 			return {
 				showAnalysis: false,
 				analysis: [],
-				section: { start: 0, end: null, noise: false, content: "" },
+				section: { start: 0, end: null, content: "" },
+				sectionStartModel: '',
 				sectionEndModel: '',
 				error: null,
 				message: null,
@@ -217,42 +213,48 @@
 				setTimeout(() => { this.message = null }, 4000)
 			},
 
-			currentTimeClick() {
-				this.section.end = Math.floor(this.$refs.audio.currentTime)
-				this.sectionEndModel = this.secondsToTime(this.section.end)
+			currentTimeStartClick() {
+				this.section.start = Math.floor(this.$refs.audio.currentTime)
+				this.sectionStartModel = this.secondsToTime(this.section.start)
 			},
 
-			endTimeClick() {
-				this.section.end = Math.floor(this.$refs.audio.duration)
+			currentTimeEndClick() {
+				this.section.end = Math.floor(this.$refs.audio.currentTime)
 				this.sectionEndModel = this.secondsToTime(this.section.end)
 			},
 
 			addSectionClick() {
 				if(this.validate()) {
+					this.section.start = this.humanToSeconds(this.sectionStartModel)
 					this.section.end = this.humanToSeconds(this.sectionEndModel)
 					const newSection = JSON.parse(JSON.stringify(this.section))
 					this.analysis.push(newSection)
-					this.section.start = newSection.end
+					this.section.start = null
 					this.section.end = null
-					this.section.noise = false
 					this.section.content = ""
+					this.sectionStartModel = ""
 					this.sectionEndModel = ""
 					this.error = null
 				}
 			},
 
 			validate() {
+				if(! /^\d{2,3}:[0-5]\d$/.test(this.sectionStartModel)) {
+					this.error = "invalid start time"
+					return false
+				}
+
 				if(! /^\d{2,3}:[0-5]\d$/.test(this.sectionEndModel)) {
 					this.error = "invalid end time"
 					return false
 				}
 
-				if(this.humanToSeconds(this.sectionEndModel) <= this.section.start) {
+				if(this.humanToSeconds(this.sectionEndModel) <= this.humanToSeconds(this.sectionStartModel)) {
 					this.error = "invalid end time"
 					return false
 				}
 
-				if(this.section.noise == false && this.section.content == '') {
+				if(this.section.content == '') {
 					this.error = "missing content description"
 					return false
 				}

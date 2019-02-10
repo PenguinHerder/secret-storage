@@ -125,7 +125,7 @@ class AudioController extends Controller {
 		$this->getValidationFactory()->make($data, [
 				'*.start' => ['required', 'int'],
 				'*.end' => ['required', 'int'],
-				'*.content' => ['required_if:noise,false', 'min:3'],
+				'*.content' => ['required', 'min:3'],
 			]
         )->validate();
 		
@@ -160,14 +160,14 @@ class AudioController extends Controller {
 		$exists = $audio->analyses()->where('user_id', Auth::user()->id)->first();
 		if($exists) {
 			$exists->sections = $data;
-			$exists->approved = false;
+			$exists->approved = true;
 			$exists->save();
 		}
 		else {
 			$audio->analyses()->create([
 				'user_id' => Auth::user()->id,
 				'sections' => $data,
-				'approved' => false,
+				'approved' => true,
 			]);
 		}
 	}
